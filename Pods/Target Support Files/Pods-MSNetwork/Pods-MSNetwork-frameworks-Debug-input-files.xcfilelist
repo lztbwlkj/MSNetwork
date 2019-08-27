@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-MSNetwork/Pods-MSNetwork-frameworks.sh
+${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework
+${BUILT_PRODUCTS_DIR}/YYCache/YYCache.framework

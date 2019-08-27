@@ -1,0 +1,424 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		10BD3683F749590018494A75 /* Pods_MSNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B5C8E891F6A9006241E5C74 /* Pods_MSNetwork.framework */; };
+		595C1B0E2314FBBD00008804 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 595C1B0D2314FBBD00008804 /* AppDelegate.m */; };
+		595C1B112314FBBD00008804 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 595C1B102314FBBD00008804 /* ViewController.m */; };
+		595C1B142314FBBD00008804 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 595C1B122314FBBD00008804 /* Main.storyboard */; };
+		595C1B162314FBC000008804 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 595C1B152314FBC000008804 /* Assets.xcassets */; };
+		595C1B192314FBC000008804 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 595C1B172314FBC000008804 /* LaunchScreen.storyboard */; };
+		595C1B1C2314FBC000008804 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 595C1B1B2314FBC000008804 /* main.m */; };
+		595C1B252314FCE900008804 /* MSNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 595C1B242314FCE900008804 /* MSNetwork.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		32BC83012F6D0304B398A92A /* Pods-MSNetwork.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSNetwork.debug.xcconfig"; path = "Target Support Files/Pods-MSNetwork/Pods-MSNetwork.debug.xcconfig"; sourceTree = "<group>"; };
+		4B5C8E891F6A9006241E5C74 /* Pods_MSNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MSNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		595C1B092314FBBD00008804 /* MSNetwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSNetwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		595C1B0C2314FBBD00008804 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		595C1B0D2314FBBD00008804 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		595C1B0F2314FBBD00008804 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		595C1B102314FBBD00008804 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		595C1B132314FBBD00008804 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		595C1B152314FBC000008804 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		595C1B182314FBC000008804 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		595C1B1A2314FBC000008804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		595C1B1B2314FBC000008804 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		595C1B232314FCE900008804 /* MSNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSNetwork.h; sourceTree = "<group>"; };
+		595C1B242314FCE900008804 /* MSNetwork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSNetwork.m; sourceTree = "<group>"; };
+		DD9C6F022EE33E9179C17464 /* Pods-MSNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSNetwork.release.xcconfig"; path = "Target Support Files/Pods-MSNetwork/Pods-MSNetwork.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		595C1B062314FBBD00008804 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				10BD3683F749590018494A75 /* Pods_MSNetwork.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		09FB93A55005AB7048C4F546 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				32BC83012F6D0304B398A92A /* Pods-MSNetwork.debug.xcconfig */,
+				DD9C6F022EE33E9179C17464 /* Pods-MSNetwork.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		595C1B002314FBBD00008804 = {
+			isa = PBXGroup;
+			children = (
+				595C1B0B2314FBBD00008804 /* MSNetwork */,
+				595C1B0A2314FBBD00008804 /* Products */,
+				09FB93A55005AB7048C4F546 /* Pods */,
+				DECF5771F6A1E3831284A497 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		595C1B0A2314FBBD00008804 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				595C1B092314FBBD00008804 /* MSNetwork.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		595C1B0B2314FBBD00008804 /* MSNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				595C1B222314FCD300008804 /* MSNetwork */,
+				595C1B0C2314FBBD00008804 /* AppDelegate.h */,
+				595C1B0D2314FBBD00008804 /* AppDelegate.m */,
+				595C1B0F2314FBBD00008804 /* ViewController.h */,
+				595C1B102314FBBD00008804 /* ViewController.m */,
+				595C1B122314FBBD00008804 /* Main.storyboard */,
+				595C1B152314FBC000008804 /* Assets.xcassets */,
+				595C1B172314FBC000008804 /* LaunchScreen.storyboard */,
+				595C1B1A2314FBC000008804 /* Info.plist */,
+				595C1B1B2314FBC000008804 /* main.m */,
+			);
+			path = MSNetwork;
+			sourceTree = "<group>";
+		};
+		595C1B222314FCD300008804 /* MSNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				595C1B232314FCE900008804 /* MSNetwork.h */,
+				595C1B242314FCE900008804 /* MSNetwork.m */,
+			);
+			path = MSNetwork;
+			sourceTree = "<group>";
+		};
+		DECF5771F6A1E3831284A497 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4B5C8E891F6A9006241E5C74 /* Pods_MSNetwork.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		595C1B082314FBBD00008804 /* MSNetwork */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 595C1B1F2314FBC000008804 /* Build configuration list for PBXNativeTarget "MSNetwork" */;
+			buildPhases = (
+				8A19B34EA0FC0CFBBB01F5B5 /* [CP] Check Pods Manifest.lock */,
+				595C1B052314FBBD00008804 /* Sources */,
+				595C1B062314FBBD00008804 /* Frameworks */,
+				595C1B072314FBBD00008804 /* Resources */,
+				EC7C41BD741F8A43FB791576 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MSNetwork;
+			productName = MSNetwork;
+			productReference = 595C1B092314FBBD00008804 /* MSNetwork.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		595C1B012314FBBD00008804 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1030;
+				ORGANIZATIONNAME = lztbwlkj;
+				TargetAttributes = {
+					595C1B082314FBBD00008804 = {
+						CreatedOnToolsVersion = 10.3;
+					};
+				};
+			};
+			buildConfigurationList = 595C1B042314FBBD00008804 /* Build configuration list for PBXProject "MSNetwork" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 595C1B002314FBBD00008804;
+			productRefGroup = 595C1B0A2314FBBD00008804 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				595C1B082314FBBD00008804 /* MSNetwork */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		595C1B072314FBBD00008804 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				595C1B192314FBC000008804 /* LaunchScreen.storyboard in Resources */,
+				595C1B162314FBC000008804 /* Assets.xcassets in Resources */,
+				595C1B142314FBBD00008804 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8A19B34EA0FC0CFBBB01F5B5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MSNetwork-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC7C41BD741F8A43FB791576 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MSNetwork/Pods-MSNetwork-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MSNetwork/Pods-MSNetwork-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MSNetwork/Pods-MSNetwork-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		595C1B052314FBBD00008804 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				595C1B252314FCE900008804 /* MSNetwork.m in Sources */,
+				595C1B112314FBBD00008804 /* ViewController.m in Sources */,
+				595C1B1C2314FBC000008804 /* main.m in Sources */,
+				595C1B0E2314FBBD00008804 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		595C1B122314FBBD00008804 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				595C1B132314FBBD00008804 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		595C1B172314FBC000008804 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				595C1B182314FBC000008804 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		595C1B1D2314FBC000008804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		595C1B1E2314FBC000008804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		595C1B202314FBC000008804 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 32BC83012F6D0304B398A92A /* Pods-MSNetwork.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = MSNetwork/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lztbwlkj.MSNetwork;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		595C1B212314FBC000008804 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD9C6F022EE33E9179C17464 /* Pods-MSNetwork.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = MSNetwork/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lztbwlkj.MSNetwork;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		595C1B042314FBBD00008804 /* Build configuration list for PBXProject "MSNetwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				595C1B1D2314FBC000008804 /* Debug */,
+				595C1B1E2314FBC000008804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		595C1B1F2314FBC000008804 /* Build configuration list for PBXNativeTarget "MSNetwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				595C1B202314FBC000008804 /* Debug */,
+				595C1B212314FBC000008804 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 595C1B012314FBBD00008804 /* Project object */;
+}
