@@ -40,16 +40,14 @@ static YYCache *_dataCache;
 }
 
 /*json转字符串*/
-+ (NSString *)jsonToString:(id)data {
-    if(!data){ return @"请求成功的数据无法转化为字符串"; }
-    NSError *error= nil;
-    // 将参数字典转换成字符串
-    NSData *stringData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:&error];
-    if (error){
-        return error.localizedDescription;
+#pragma mark 字典转化字符串
++(NSString*)dictionaryToJson:(id)dic{
+    if (dic){
+        NSError *parseError = nil;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
+        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
-    NSString *paraString = [[NSString alloc] initWithData:stringData encoding:NSUTF8StringEncoding];
-    return paraString;
+    return nil;
 }
 
 #pragma mark -- 初始化相关属性
@@ -64,6 +62,7 @@ static YYCache *_dataCache;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     //打开状态栏菊花
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    
     _dataCache = [YYCache cacheWithName:NetworkResponseCache];
     _isOpenLog = YES;
 }
@@ -110,7 +109,6 @@ static YYCache *_dataCache;
 
 /// 取消所有HTTP请求
 + (void)cancelAllRequest{
-
     @synchronized (self) {
         [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask  *_Nonnull task, NSUInteger idx, BOOL * _Nonnull stop) {
             [task cancel];
@@ -121,11 +119,9 @@ static YYCache *_dataCache;
 
 /// 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
 + (void)networkStatusWithBlock:(MSNetworkStatus)networkStatus{
-
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
             switch (status) {
                 case AFNetworkReachabilityStatusUnknown:
                     networkStatus ? networkStatus(MSNetworkStatusUnknown) : nil;
@@ -143,7 +139,7 @@ static YYCache *_dataCache;
                     break;
             }
         }];
-    });
+//    });
 }
 
 /**是否打开网络加载菊花(默认打开)*/
@@ -190,19 +186,18 @@ static YYCache *_dataCache;
         case MSCachePolicyOnlyCache:
             return @"只从缓存读数据，如果缓存没有数据，返回一个空";
             break;
-        case MSCachePolicyNetworkOnly:
+        case MSCachePolicyNetCacheBoth:
             return @"先从网络获取数据，同时会在本地缓存数据";
             break;
-        case MSCachePolicyCacheElseNetwork:
+        case MSCachePolicyCacheElseNet:
             return @"先从缓存读取数据，如果没有再从网络获取";
             break;
-        case MSCachePolicyNetworkElseCache:
+        case MSCachePolicyNetElseCache:
             return @"先从网络获取数据，如果没有再从缓存读取数据";
             break;
-        case MSCachePolicyCacheThenNetwork:
+        case MSCachePolicyCacheThenNet:
             return @"先从缓存读取数据，然后再从网络获取数据，Block将产生两次调用";
             break;
-
         default:
             return @"未知缓存策略，采用MSCachePolicyIgnoreCache策略";
             break;
@@ -233,8 +228,7 @@ static YYCache *_dataCache;
          parameters:(NSDictionary *)parameters
         cachePolicy:(MSCachePolicy)cachePolicy
         success:(MSHttpSuccess)success
-        failure:(MSHttpFail)failure
-{
+        failure:(MSHttpFail)failure{
     [self HTTPWithMethod:MSRequestMethodHEAD url:url parameters:parameters cachePolicy:cachePolicy success:success failure:failure];
 }
 
@@ -244,8 +238,7 @@ static YYCache *_dataCache;
         parameters:(NSDictionary *)parameters
        cachePolicy:(MSCachePolicy)cachePolicy
         success:(MSHttpSuccess)success
-        failure:(MSHttpFail)failure
-{
+        failure:(MSHttpFail)failure{
     [self HTTPWithMethod:MSRequestMethodPUT url:url parameters:parameters cachePolicy:cachePolicy success:success failure:failure];
 }
 
@@ -255,8 +248,7 @@ static YYCache *_dataCache;
           parameters:(NSDictionary *)parameters
          cachePolicy:(MSCachePolicy)cachePolicy
         success:(MSHttpSuccess)success
-        failure:(MSHttpFail)failure
-{
+        failure:(MSHttpFail)failure{
     [self HTTPWithMethod:MSRequestMethodPATCH url:url parameters:parameters cachePolicy:cachePolicy success:success failure:failure];
 }
 
@@ -274,8 +266,7 @@ static YYCache *_dataCache;
 + (void)uploadFileWithURL:(NSString *)url parameters:(NSDictionary *)parameters name:(NSString *)name filePath:(NSString *)filePath
                  progress:(MSHttpProgress)progress
                   success:(MSHttpSuccess)success
-                  failure:(MSHttpFail)failure
-{
+                  failure:(MSHttpFail)failure{
     NSURLSessionTask *sessionTask = [_sessionManager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         //添加-文件
         NSError *error = nil;
@@ -353,8 +344,7 @@ static YYCache *_dataCache;
 
 #pragma mark -- 下载文件
 +(void)downloadWithURL:(NSString *)url fileDir:(NSString *)fileDir progress:(MSHttpProgress)progress success:(MSHttpDownload)success
-                                                                                                     failure:(MSHttpFail)failure
-{
+                                                                                                     failure:(MSHttpFail)failure{
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     __block NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         if (_isOpenLog) {
@@ -367,7 +357,7 @@ static YYCache *_dataCache;
 
     } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
         //拼接缓存目录
-        NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:fileDir ? fileDir : @"Download"];
+        NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:fileDir ? fileDir : @"Download"];
 
         //打开文件管理器
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -375,7 +365,9 @@ static YYCache *_dataCache;
         [fileManager createDirectoryAtPath:downloadDir withIntermediateDirectories:YES attributes:nil error:nil];
         //拼接文件路径
         NSString *filePath = [downloadDir stringByAppendingPathComponent:response.suggestedFilename];
-
+        if (_isOpenLog) {
+            MSLog(@"DownLoad filePath = %@",filePath);
+        }
         return [NSURL fileURLWithPath:filePath];
 
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
@@ -414,7 +406,7 @@ static YYCache *_dataCache;
     }
 
     if (_isOpenLog) {
-        MSLog(@"\n请求参数 = %@\n 请求URL = %@\n 请求方式 = %@\n 缓存策略 = %@\n",parameters ? [self jsonToString:parameters]:@"", url, [self getMethodStr:method], [self cachePolicyStr:cachePolicy]);
+        MSLog(@"\n请求参数 = %@\n 请求URL = %@\n 请求方式 = %@\n 缓存策略 = %@\n",parameters ? parameters:@"", url, [self getMethodStr:method], [self cachePolicyStr:cachePolicy]);
     }
 
     if (cachePolicy == MSCachePolicyOnlyNetNoCache) {
@@ -422,18 +414,16 @@ static YYCache *_dataCache;
         [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
     }else if (cachePolicy == MSCachePolicyOnlyCache){
         //只从缓存读数据，如果缓存没有数据，返回一个空。
-        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
-            success ? success(object) : nil;
-        }];
+        [self httpCacheForURL:url parameters:parameters withBlock:success];
 
-    }else if (cachePolicy == MSCachePolicyNetworkOnly){
+    }else if (cachePolicy == MSCachePolicyNetCacheBoth){
         //先从网络获取数据，同时会在本地缓存数据
         [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
             [self setHttpCache:responseObject url:url parameters:parameters];
             success ? success(responseObject) : nil;
         } failure:failure];
 
-    }else if (cachePolicy == MSCachePolicyCacheElseNetwork){
+    }else if (cachePolicy == MSCachePolicyCacheElseNet){
         //先从缓存读取数据，如果没有再从网络获取
         [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
             if (object) {
@@ -442,7 +432,7 @@ static YYCache *_dataCache;
                 [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
             }
         }];
-    }else if (cachePolicy == MSCachePolicyNetworkElseCache){
+    }else if (cachePolicy == MSCachePolicyNetElseCache){
         //先从网络获取数据，如果没有，此处的没有可以理解为访问网络失败，再从缓存读取，并且返回Error
         [self httpWithMethod:method url:url parameters:parameters success:success failure:^(NSError *error) {
             [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
@@ -450,7 +440,7 @@ static YYCache *_dataCache;
             }];
             failure(error);
         }];
-    }else if (cachePolicy == MSCachePolicyCacheThenNetwork){
+    }else if (cachePolicy == MSCachePolicyCacheThenNet){
         //先从缓存读取数据，然后在本地缓存数据，无论结果如何都会再次从网络获取数据，在这种情况下，Block将产生两次调用
         [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
             success ? success(object) : nil;
@@ -472,7 +462,7 @@ static YYCache *_dataCache;
 
     [self dataTaskWithHTTPMethod:method url:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
         if (_isOpenLog) {
-            MSLog(@"请求结果 = %@",[self jsonToString:responseObject]);
+            MSLog(@"请求结果 = %@",[self dictionaryToJson:responseObject]);
         }
         [[self allSessionTask] removeObject:task];
         success ? success(responseObject) : nil;
@@ -482,6 +472,24 @@ static YYCache *_dataCache;
             MSLog(@"错误内容 = %@",error);
         }
         failure ? failure(error) : nil;
+        [[self allSessionTask] removeObject:task];
+    }];
+}
+
++ (void)httpWithMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters callBlock:(void(^)(id responseObject,NSError *error))callBlock{
+    
+    [self dataTaskWithHTTPMethod:method url:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
+        if (_isOpenLog) {
+            MSLog(@"请求结果 = %@",[self dictionaryToJson:responseObject]);
+        }
+        [[self allSessionTask] removeObject:task];
+        callBlock ? callBlock(responseObject,nil) : nil;
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (_isOpenLog) {
+            MSLog(@"错误内容 = %@",error);
+        }
+        callBlock ? callBlock(nil,error) : nil;
         [[self allSessionTask] removeObject:task];
     }];
 }
@@ -548,6 +556,7 @@ static YYCache *_dataCache;
 {
     if (httpData) {
         NSString *cacheKey = [self cacheKeyWithURL:url parameters:parameters];
+        MSLog(@"缓存cacheKey = %@",cacheKey);
         [_dataCache setObject:httpData forKey:cacheKey withBlock:nil];
     }
 }
@@ -555,10 +564,11 @@ static YYCache *_dataCache;
 + (void)httpCacheForURL:(NSString *)url parameters:(NSDictionary *)parameters withBlock:(void(^)(id responseObject))block
 {
     NSString *cacheKey = [self cacheKeyWithURL:url parameters:parameters];
+    MSLog(@"获取缓存cacheKey = %@",cacheKey);
     [_dataCache objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_isOpenLog) {
-                MSLog(@"缓存结果 = %@",[self jsonToString:object]);
+                MSLog(@"缓存结果 = %@",[self dictionaryToJson:object]);
             }
             block(object);
         });
@@ -566,29 +576,24 @@ static YYCache *_dataCache;
 }
 
 
-+ (void)setCostLimit:(NSInteger)costLimit
-{
++ (void)setCostLimit:(NSInteger)costLimit{
     [_dataCache.diskCache setCostLimit:costLimit];//磁盘最大缓存开销
 }
 
-+ (NSInteger)getAllHttpCacheSize
-{
++ (NSInteger)getAllHttpCacheSize{
     return [_dataCache.diskCache totalCost];
 }
 
-+ (void)getAllHttpCacheSizeBlock:(void(^)(NSInteger totalCount))block
-{
++ (void)getAllHttpCacheSizeBlock:(void(^)(NSInteger totalCount))block{
     return [_dataCache.diskCache totalCountWithBlock:block];
 }
 
-+ (void)removeAllHttpCache
-{
++ (void)removeAllHttpCache{
     [_dataCache.diskCache removeAllObjects];
 }
 
 + (void)removeAllHttpCacheBlock:(void(^)(int removedCount, int totalCount))progress
-                       endBlock:(void(^)(BOOL error))end
-{
+                       endBlock:(void(^)(BOOL error))end{
     [_dataCache.diskCache removeAllObjectsWithProgressBlock:progress endBlock:end];
 }
 
@@ -603,7 +608,7 @@ static YYCache *_dataCache;
     }
 
     /// 将URL与转换好的参数字符串拼接在一起,成为最终存储的KEY值
-    NSString *cacheKey = [NSString stringWithFormat:@"%@%@",url,[self jsonToString:parameters]];
+    NSString *cacheKey = [NSString stringWithFormat:@"%@%@",url,[self dictionaryToJson:parameters]];
 
     return cacheKey;
 }
@@ -678,7 +683,7 @@ static YYCache *_dataCache;
 
     NSMutableString *strM = [NSMutableString stringWithString:@"{\n"];
     [self enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [strM appendFormat:@"\t%@,\n",obj];
+        [strM appendFormat:@"\t%@ = %@,\n",key,obj];
     }];
     [strM appendString:@"}\n"];
     return  strM;

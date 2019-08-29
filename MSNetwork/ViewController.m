@@ -8,40 +8,57 @@
 
 #import "ViewController.h"
 #import "MSNetwork.h"
+#import "ReqViewController.h"
 
-@interface ViewController ()
-
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property(nonatomic, copy) NSMutableArray *dataSource;
 @end
 
 @implementation ViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [MSNetwork openLog];
-    
-    [MSNetwork POST:@"http://39.98.98.194/cms/contentApp/getContentWithNum" parameters:[self setpramera:@{@"columnId":@"54156819b2bd4ca49fa18eb0736e2ee5",@"num":@"4"}] cachePolicy:MSCachePolicyNetworkOnly success:^(id  _Nonnull responseObject) {
-        
-    } failure:^(NSError * _Nonnull error) {
-        
-    }];
 }
 
--(id)setpramera:(id)pramer{
-    
-    NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:pramer];
-    [dic setObject:@{@"tokenId":@"",@"userId":@"",@"initDate":@"",@"clientType":@"mobilType",@"tokenKey":@""} forKey:@"accountToken"];
-    return @{@"jsonStr":[self jsonToString:dic]};
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
 
-/**
- *  json转字符串
- */
-- (NSString *)jsonToString:(NSDictionary *)dic
-{
-    if(!dic){
-        return nil;
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.dataSource.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *identifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:nil];
-    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    cell.textLabel.text = self.dataSource[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.numberOfLines = 0;
+    return cell;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    ReqViewController *vc = [[ReqViewController alloc] init];
+    vc.method = indexPath.row;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+
+-(NSMutableArray *)dataSource{
+    if (!_dataSource) {
+        _dataSource = @[@"GET",@"POST",@"HEAD",@"PUT",@"PATCH",@"DELETE"].mutableCopy;
+    }
+    return _dataSource;
+}
+
+
 @end

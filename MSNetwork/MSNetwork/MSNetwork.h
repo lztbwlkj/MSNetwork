@@ -11,7 +11,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#ifndef kIsNetwork
+#define kIsNetwork     [MSNetwork isNetwork]  // 一次性判断是否有网的宏
+#endif
+
+#ifndef kIsWWANNetwork
+#define kIsWWANNetwork [MSNetwork isWWANNetwork]  // 一次性判断是否为手机网络的宏
+#endif
+
+#ifndef kIsWiFiNetwork
+#define kIsWiFiNetwork [MSNetwork isWiFiNetwork]  // 一次性判断是否为WiFi网络的宏
+#endif
+
 @class YYCache, AFHTTPSessionManager;
+
 
 typedef NS_ENUM(NSUInteger, MSCachePolicy){
     /**只从网络获取数据，且数据不会缓存在本地**/
@@ -19,13 +32,13 @@ typedef NS_ENUM(NSUInteger, MSCachePolicy){
     /**只从缓存读数据，如果缓存没有数据，返回一个nil**/
             MSCachePolicyOnlyCache = 1,
     /**先从网络获取数据，同时会在本地缓存数据*/
-            MSCachePolicyNetworkOnly = 2,
+            MSCachePolicyNetCacheBoth = 2,
     /**先从缓存读取数据，如果没有再从网络获取*/
-            MSCachePolicyCacheElseNetwork = 3,
+            MSCachePolicyCacheElseNet = 3,
     /**先从网络获取数据，如果没有在从缓存获取，此处的没有可以理解为访问网络失败，再从缓存读取*/
-            MSCachePolicyNetworkElseCache = 4,
+            MSCachePolicyNetElseCache = 4,
     /**先从缓存读取数据，然后在从网络获取并且缓存，在这种情况下，Block将产生两次调用*/
-            MSCachePolicyCacheThenNetwork = 5
+            MSCachePolicyCacheThenNet = 5
 };
 
 /**请求方式*/
@@ -72,6 +85,8 @@ typedef NS_ENUM(NSUInteger, MSResponseSerializer) {
 /**请求的成功Block*/
 typedef void(^MSHttpSuccess)(id responseObject);
 
+typedef void(^MSHttpSuccess)(id responseObject,NSError *error);
+
 /**请求的失败Block*/
 typedef void(^MSHttpFail)(NSError *error);
 
@@ -86,10 +101,10 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 
 @interface MSNetwork : NSObject
 
-/// 开启日志打印 (Debug级别)
+/// 开启日志打印 默认打开(Debug级别)
 + (void)openLog;
 
-/// 关闭日志打印,默认关闭
+/// 关闭日志打印,
 + (void)closeLog;
 
 /// 有网YES, 无网:NO
@@ -131,6 +146,16 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 #pragma mark -- 网络请求 --
 
 #pragma mark -- GET请求
+/**
+ GET请求
+ 
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
+
 + (void)GET:(NSString *)URL
                parameters:(NSDictionary *)parameters
               cachePolicy:(MSCachePolicy)cachePolicy
@@ -139,6 +164,15 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 
 
 #pragma mark -- POST请求
+/**
+ POST请求
+ 
+ @param URL 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
 + (void)POST:(NSString *)URL
                 parameters:(NSDictionary *)parameters
                cachePolicy:(MSCachePolicy)cachePolicy
@@ -146,6 +180,15 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
                    failure:(MSHttpFail)failure;
 
 #pragma mark -- HEAD请求
+/**
+ HEAD请求
+ 
+ @param url 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
 + (void)HEAD:(NSString *)url
   parameters:(NSDictionary *)parameters
  cachePolicy:(MSCachePolicy)cachePolicy
@@ -154,6 +197,15 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 
 
 #pragma mark -- PUT请求
+/**
+ PUT请求
+ 
+ @param url 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
 + (void)PUT:(NSString *)url
  parameters:(NSDictionary *)parameters
 cachePolicy:(MSCachePolicy)cachePolicy
@@ -161,6 +213,15 @@ cachePolicy:(MSCachePolicy)cachePolicy
     failure:(MSHttpFail)failure;
 
 #pragma mark -- PATCH请求
+/**
+ PATCH请求
+ 
+ @param url 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
 + (void)PATCH:(NSString *)url
    parameters:(NSDictionary *)parameters
   cachePolicy:(MSCachePolicy)cachePolicy
@@ -169,11 +230,37 @@ cachePolicy:(MSCachePolicy)cachePolicy
 
 
 #pragma mark -- DELETE请求
+/**
+ DELETE请求
+ 
+ @param url 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
+
 + (void)DELETE:(NSString *)url
     parameters:(NSDictionary *)parameters
    cachePolicy:(MSCachePolicy)cachePolicy
        success:(MSHttpSuccess)success
        failure:(MSHttpFail)failure;
+/**
+ 自定义请求方式
+ 
+ @param method 请求方式(GET, POST, HEAD, PUT, PATCH, DELETE)
+ @param url 请求地址
+ @param parameters 请求参数
+ @param cachePolicy 缓存策略
+ @param success 请求成功回调
+ @param failure 请求失败回调
+ */
++ (void)HTTPWithMethod:(MSRequestMethod)method
+                   url:(NSString *)url
+            parameters:(NSDictionary *)parameters
+           cachePolicy:(MSCachePolicy)cachePolicy
+               success:(MSHttpSuccess)success
+               failure:(MSHttpFail)failure;
 
 #pragma mark -- 上传文件
 + (void)uploadFileWithURL:(NSString *)url
