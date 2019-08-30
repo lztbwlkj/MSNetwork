@@ -64,7 +64,6 @@
         
     } failure:^(NSError * _Nonnull error) {
         [MBProgressHUD mb_showMidMessage:[error localizedDescription] onView:nil hideBlock:nil];
-        [weakSelf.tableView reloadData];
     }];
 }
 
