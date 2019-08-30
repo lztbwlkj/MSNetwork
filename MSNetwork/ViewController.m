@@ -7,8 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "MSNetwork.h"
 #import "ReqViewController.h"
+#import "DemoViewController.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -24,11 +24,12 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.dataSource.count;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.dataSource.count;
+    NSArray *arr = self.dataSource[section];
+    return arr.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -37,7 +38,8 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
-    cell.textLabel.text = self.dataSource[indexPath.row];
+    NSArray *arr = self.dataSource[indexPath.section];
+    cell.textLabel.text = arr[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.numberOfLines = 0;
     return cell;
@@ -46,16 +48,22 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    ReqViewController *vc = [[ReqViewController alloc] init];
-    vc.method = indexPath.row;
-    [self.navigationController pushViewController:vc animated:YES];
+    if (indexPath.section == 0) {
+        
+        ReqViewController *vc = [[ReqViewController alloc] init];
+        vc.method = indexPath.row;
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }else if (indexPath.section == 1){
+        DemoViewController *vc = [[DemoViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
-
 
 
 -(NSMutableArray *)dataSource{
     if (!_dataSource) {
-        _dataSource = @[@"GET",@"POST",@"HEAD",@"PUT",@"PATCH",@"DELETE"].mutableCopy;
+        _dataSource = @[@[@"GET",@"POST",@"HEAD",@"PUT",@"PATCH",@"DELETE"],@[@"实战应用"]].mutableCopy;
     }
     return _dataSource;
 }

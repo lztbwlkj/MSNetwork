@@ -24,68 +24,68 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 @class YYCache, AFHTTPSessionManager;
-
+/**
+ 这是我目前能想到的几个缓存场景
+ * 只从网络获取数据，且数据不会缓存在本地（一般情况）
+ * 从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据
+ * 先从网络获取数据并缓存数据，如果访问网络失败再从缓存读取，失败的Block和成功的Block都会执行
+ * 先从缓存读取数据，然后在从网络获取并且缓存，在这种情况下，Block将产生两次调用
+ **/
 
 typedef NS_ENUM(NSUInteger, MSCachePolicy){
     /**只从网络获取数据，且数据不会缓存在本地**/
-            MSCachePolicyOnlyNetNoCache = 0,
-    /**只从缓存读数据，如果缓存没有数据，返回一个nil**/
-            MSCachePolicyOnlyCache = 1,
-    /**先从网络获取数据，同时会在本地缓存数据*/
-            MSCachePolicyNetCacheBoth = 2,
-    /**先从缓存读取数据，如果没有再从网络获取*/
-            MSCachePolicyCacheElseNet = 3,
-    /**先从网络获取数据，如果没有在从缓存获取，此处的没有可以理解为访问网络失败，再从缓存读取*/
-            MSCachePolicyNetElseCache = 4,
-    /**先从缓存读取数据，然后在从网络获取并且缓存，在这种情况下，Block将产生两次调用*/
-            MSCachePolicyCacheThenNet = 5
+    MSCachePolicyOnlyNetNoCache = 0,
+    /** 从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据**/
+    MSCachePolicyCacheElseNet,
+    /** 先从网络获取数据并缓存数据，如果访问网络失败再从缓存读取，失败的Block和成功的Block都会执行*/
+    MSCachePolicyNetElseCache,
+    /**先从缓存读取数据，然后在从网络获取并且缓存，在这种情况下，缓存数据与网络数据不一致Block将产生两次调用*/
+    MSCachePolicyCacheThenNet
 };
 
 /**请求方式*/
 typedef NS_ENUM(NSUInteger, MSRequestMethod){
     /**GET请求方式*/
-            MSRequestMethodGET = 0,
+    MSRequestMethodGET = 0,
     /**POST请求方式*/
-            MSRequestMethodPOST,
+    MSRequestMethodPOST,
     /**HEAD请求方式*/
-            MSRequestMethodHEAD,
+    MSRequestMethodHEAD,
     /**PUT请求方式*/
-            MSRequestMethodPUT,
+    MSRequestMethodPUT,
     /**PATCH请求方式*/
-            MSRequestMethodPATCH,
+    MSRequestMethodPATCH,
     /**DELETE请求方式*/
-            MSRequestMethodDELETE
+    MSRequestMethodDELETE
 };
 
 typedef NS_ENUM(NSUInteger, MSNetworkStatusType){
     /**未知网络*/
-            MSNetworkStatusUnknown,
+    MSNetworkStatusUnknown,
     /**无网路*/
-            MSNetworkStatusNotReachable,
+    MSNetworkStatusNotReachable,
     /**手机网络*/
-            MSNetworkStatusReachableWWAN,
+    MSNetworkStatusReachableWWAN,
     /**WiFi网络*/
-            MSNetworkStatusReachableWiFi
+    MSNetworkStatusReachableWiFi
 };
 
 typedef NS_ENUM(NSUInteger, MSRequestSerializer){
     /**设置请求数据为JSON格式*/
-            MSRequestSerializerJSON,
+    MSRequestSerializerJSON,
     /**设置请求数据为二进制格式*/
-            MSRequestSerializerHTTP
+    MSRequestSerializerHTTP
 };
 
 typedef NS_ENUM(NSUInteger, MSResponseSerializer) {
     /**设置响应数据为JSON格式*/
-            MSResponsetSerializerJSON,
+    MSResponsetSerializerJSON,
     /**设置响应数据为二进制格式*/
-            MSResponseSerializerHTTP
+    MSResponseSerializerHTTP
 };
 
 /**请求的成功Block*/
 typedef void(^MSHttpSuccess)(id responseObject);
-
-typedef void(^MSHttpSuccess)(id responseObject,NSError *error);
 
 /**请求的失败Block*/
 typedef void(^MSHttpFail)(NSError *error);

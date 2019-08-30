@@ -15,20 +15,24 @@ PODS:
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
   - YYCache (1.0.4)
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking
   - YYCache
+  - YYModel
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - YYCache
+    - YYModel
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: aab49a7e92c29840e44c0d5cdfc2ea57647813c8
+PODFILE CHECKSUM: 4acb814cdd5c82bc6ab3271ef0850be0df95a712
 
 COCOAPODS: 1.7.5

@@ -7,9 +7,7 @@
 //
 
 #import "ReqViewController.h"
-#import "MBProgressHUD+Hud.h"
-#import "MSNetwork.h"
-#import "MSHTTPRequest.h"
+
 
 @interface ReqViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *statusDesc;
@@ -19,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *cacheDesc;
 
 @property(nonatomic, assign) MSCachePolicy cachePolicy;
+@property(nonatomic, assign) int blockSuccessCount;
+
 @end
 
 @implementation ReqViewController
@@ -26,7 +26,6 @@
     self = [super init];
     if (self) {
         self.view.backgroundColor = [UIColor whiteColor];
-        [MSNetwork openLog];
     }
     return self;
 }
@@ -34,13 +33,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.blockSuccessCount = 0;
     
     NSLog(@"网络缓存大小cache = %fKB",[MSNetwork getAllHttpCacheSize]/1024.f);
     
     self.cacheDesc.text = [self getCacheStr:_cachePolicy];
     
     //开启控制台log
-    [MSNetwork openLog];
+    //[MSNetwork openLog];
 
     //网络状态
     __weak __typeof(&*self)weakSelf = self;
@@ -74,15 +74,15 @@
         NSLog(@"无网络");
     }
     // 或
-    //    if ([PPNetworkHelper isNetwork]) {
-    //        PPLog(@"有网络");
-    //        if ([PPNetworkHelper isWWANNetwork]) {
-    //            PPLog(@"手机网络");
-    //        }else if ([PPNetworkHelper isWiFiNetwork]){
-    //            PPLog(@"WiFi网络");
+    //    if ([MSNetwork isNetwork]) {
+    //        NSLog(@"有网络");
+    //        if ([MSNetwork isWWANNetwork]) {
+    //            NSLog(@"手机网络");
+    //        }else if ([MSNetwork isWiFiNetwork]){
+    //            NSLog(@"WiFi网络");
     //        }
     //    } else {
-    //        PPLog(@"无网络");
+    //        NSLog(@"无网络");
     //    }
 }
 
@@ -127,35 +127,27 @@
 }
 
 - (IBAction)reqClick:(UIButton *)sender {
+    self.blockSuccessCount = 0;
+    
     sender.enabled = NO;
     //默认参数在AppDelegaate.m中，该接口需要以参数jsonStr为固定键，值为字符串的字典类型
     //强烈建议在该方法上再封装一次自己公司接口的请求参数配置和请求方式
     __weak __typeof(&*self)weakSelf = self;
 //    NSDictionary *para = @{ @"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
 //    NSLog(@"parameters = %@",[self jsonToString:para]);
+    [MSNetwork setValue:@"9" forHTTPHeaderField:@"fromType"];
+    [MSNetwork setBaseURL:@""];
+
     NSDictionary * parameters = [self dictionaryWithJsonString:_pramet.text];
     [MSNetwork HTTPWithMethod:self.method url:_urlTextField.text parameters:parameters cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
         sender.enabled = YES;
         weakSelf.contentView.text = [NSString stringWithFormat:@"%@",responseObject];
-
+        NSLog(@"block调用次数 %d",self.blockSuccessCount++);
     } failure:^(NSError * _Nonnull error) {
         sender.enabled = YES;
         [MBProgressHUD mb_showMidMessage:[error localizedDescription] onView:nil hideBlock:nil];
         weakSelf.contentView.text = [error localizedDescription];
     }];
-    
-    /**
-     通过封装好的网络层进行请求配 , 我目前的项目是这样做的,在MSHTTPRequest文件夹中可以看到
-     当然,不同的项目可以有不同的做法,没有最好的做法,只有最合适的做法,
-     这仅仅是我抛砖引玉, 希望大家能各显神通.
-     */
-//    [MSHTTPRequest GET:@"" parameters:para cachePolicy:self.cachePolicy success:^(id  _Nonnull response) {
-//        sender.enabled = YES;
-//        weakSelf.contentView.text = [NSString stringWithFormat:@"%@",response];
-//    } failure:^(NSError * _Nonnull error) {
-//        sender.enabled = YES;
-//        weakSelf.contentView.text = [error localizedDescription];
-//    }];
 }
 
 - (IBAction)cancel:(UIButton *)sender {
@@ -211,17 +203,11 @@
         case MSCachePolicyOnlyNetNoCache:
             return @"只从网络获取数据，且数据不会缓存在本地";
             break;
-        case MSCachePolicyOnlyCache:
-            return @"只从缓存读数据，如果缓存没有数据，返回一个空";
-            break;
-        case MSCachePolicyNetCacheBoth:
-            return @"先从网络获取数据，同时会在本地缓存数据";
-            break;
         case MSCachePolicyCacheElseNet:
-            return @"先从缓存读取数据，如果没有再从网络获取";
+            return @"从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据";
             break;
         case MSCachePolicyNetElseCache:
-            return @"先从网络获取数据，如果没有再从缓存读取数据，此处的没有可以理解为访问网络失败，再从缓存读取数据,失败的Block和成功的Block都会执行";
+            return @"先从网络获取数据并缓存数据，如果访问网络失败再从缓存读取，失败的Block和成功的Block都会执行";
             break;
         case MSCachePolicyCacheThenNet:
             return @"先从缓存读取数据，然后再从网络获取数据，成功的Block将产生两次调用";

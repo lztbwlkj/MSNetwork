@@ -21,6 +21,9 @@
 		595C1B192314FBC000008804 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 595C1B172314FBC000008804 /* LaunchScreen.storyboard */; };
 		595C1B1C2314FBC000008804 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 595C1B1B2314FBC000008804 /* main.m */; };
 		595C1B252314FCE900008804 /* MSNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 595C1B242314FCE900008804 /* MSNetwork.m */; };
+		59A800DC2318CA860022654F /* DemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A800DA2318CA860022654F /* DemoViewController.m */; };
+		59A800DD2318CA860022654F /* DemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 59A800DB2318CA860022654F /* DemoViewController.xib */; };
+		59A800E22318CE6F0022654F /* DemoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A800E12318CE6F0022654F /* DemoModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +52,12 @@
 		595C1B1B2314FBC000008804 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		595C1B232314FCE900008804 /* MSNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSNetwork.h; sourceTree = "<group>"; };
 		595C1B242314FCE900008804 /* MSNetwork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSNetwork.m; sourceTree = "<group>"; };
+		59A800D92318CA860022654F /* DemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoViewController.h; sourceTree = "<group>"; };
+		59A800DA2318CA860022654F /* DemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoViewController.m; sourceTree = "<group>"; };
+		59A800DB2318CA860022654F /* DemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemoViewController.xib; sourceTree = "<group>"; };
+		59A800E02318CE6F0022654F /* DemoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DemoModel.h; sourceTree = "<group>"; };
+		59A800E12318CE6F0022654F /* DemoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DemoModel.m; sourceTree = "<group>"; };
+		59A800E32318D06B0022654F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		DD9C6F022EE33E9179C17464 /* Pods-MSNetwork.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSNetwork.release.xcconfig"; path = "Target Support Files/Pods-MSNetwork/Pods-MSNetwork.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +125,7 @@
 		595C1B0B2314FBBD00008804 /* MSNetwork */ = {
 			isa = PBXGroup;
 			children = (
+				59A800DE2318CDC30022654F /* 实战应用 */,
 				5939ABEE2317BE880012AF04 /* MSHTTPRequest */,
 				5939ABE72317B51D0012AF04 /* MBProgressHUD */,
 				595C1B222314FCD300008804 /* MSNetwork */,
@@ -130,6 +140,7 @@
 				595C1B152314FBC000008804 /* Assets.xcassets */,
 				595C1B172314FBC000008804 /* LaunchScreen.storyboard */,
 				595C1B1A2314FBC000008804 /* Info.plist */,
+				59A800E32318D06B0022654F /* PrefixHeader.pch */,
 				595C1B1B2314FBC000008804 /* main.m */,
 			);
 			path = MSNetwork;
@@ -142,6 +153,26 @@
 				595C1B242314FCE900008804 /* MSNetwork.m */,
 			);
 			path = MSNetwork;
+			sourceTree = "<group>";
+		};
+		59A800DE2318CDC30022654F /* 实战应用 */ = {
+			isa = PBXGroup;
+			children = (
+				59A800DF2318CE530022654F /* Model */,
+				59A800D92318CA860022654F /* DemoViewController.h */,
+				59A800DA2318CA860022654F /* DemoViewController.m */,
+				59A800DB2318CA860022654F /* DemoViewController.xib */,
+			);
+			path = "实战应用";
+			sourceTree = "<group>";
+		};
+		59A800DF2318CE530022654F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				59A800E02318CE6F0022654F /* DemoModel.h */,
+				59A800E12318CE6F0022654F /* DemoModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DECF5771F6A1E3831284A497 /* Frameworks */ = {
@@ -215,6 +246,7 @@
 				5939ABE6231779EE0012AF04 /* ReqViewController.xib in Resources */,
 				595C1B162314FBC000008804 /* Assets.xcassets in Resources */,
 				595C1B142314FBBD00008804 /* Main.storyboard in Resources */,
+				59A800DD2318CA860022654F /* DemoViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +301,9 @@
 			files = (
 				5939ABE5231779EE0012AF04 /* ReqViewController.m in Sources */,
 				5939ABEC2317B51E0012AF04 /* MBProgressHUD.m in Sources */,
+				59A800E22318CE6F0022654F /* DemoModel.m in Sources */,
 				595C1B252314FCE900008804 /* MSNetwork.m in Sources */,
+				59A800DC2318CA860022654F /* DemoViewController.m in Sources */,
 				595C1B112314FBBD00008804 /* ViewController.m in Sources */,
 				595C1B1C2314FBC000008804 /* main.m in Sources */,
 				5939ABF12317BEC10012AF04 /* MSInterfaceConst.m in Sources */,
@@ -420,6 +454,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77LD5G9JF9;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MSNetwork/PrefixHeader.pch;
 				INFOPLIST_FILE = MSNetwork/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -438,6 +474,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77LD5G9JF9;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MSNetwork/PrefixHeader.pch;
 				INFOPLIST_FILE = MSNetwork/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

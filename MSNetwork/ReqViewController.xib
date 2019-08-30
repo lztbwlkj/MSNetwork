@@ -103,8 +103,6 @@
                         <segment title="缓存2"/>
                         <segment title="缓存3"/>
                         <segment title="缓存4"/>
-                        <segment title="缓存5"/>
-                        <segment title="缓存6"/>
                     </segments>
                     <color key="tintColor" red="0.062745098040000002" green="0.5568627451" blue="0.91372549020000005" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>

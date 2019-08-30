@@ -6,6 +6,7 @@ target 'MSNetwork' do
   use_frameworks!
   pod 'AFNetworking'
   pod 'YYCache'
+  pod 'YYModel'
 
   # Pods for MSNetwork
 

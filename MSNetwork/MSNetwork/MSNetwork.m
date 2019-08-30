@@ -41,13 +41,11 @@ static YYCache *_dataCache;
 
 /*json转字符串*/
 #pragma mark 字典转化字符串
-+(NSString*)dictionaryToJson:(id)dic{
-    if (dic){
-        NSError *parseError = nil;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&parseError];
-        return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    }
-    return nil;
++(NSString*)dictionaryToJson:(id)jsonObject{
+    if (!jsonObject) return nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonObject options:0 error:NULL];
+    if (jsonData.length == 0) return nil;
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark -- 初始化相关属性
@@ -183,23 +181,16 @@ static YYCache *_dataCache;
         case MSCachePolicyOnlyNetNoCache:
             return @"只从网络获取数据，且数据不会缓存在本地";
             break;
-        case MSCachePolicyOnlyCache:
-            return @"只从缓存读数据，如果缓存没有数据，返回一个空";
-            break;
-        case MSCachePolicyNetCacheBoth:
-            return @"先从网络获取数据，同时会在本地缓存数据";
-            break;
         case MSCachePolicyCacheElseNet:
-            return @"先从缓存读取数据，如果没有再从网络获取";
+            return @"从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据";
             break;
         case MSCachePolicyNetElseCache:
-            return @"先从网络获取数据，如果没有再从缓存读取数据";
+            return @"先从网络获取数据并缓存数据，如果访问网络失败再从缓存读取，失败的Block和成功的Block都会执行";
             break;
         case MSCachePolicyCacheThenNet:
-            return @"先从缓存读取数据，然后再从网络获取数据，Block将产生两次调用";
+            return @"先从缓存读取数据，然后再从网络获取数据，成功的Block将产生两次调用";
             break;
         default:
-            return @"未知缓存策略，采用MSCachePolicyIgnoreCache策略";
             break;
     }
 }
@@ -409,51 +400,96 @@ static YYCache *_dataCache;
         MSLog(@"\n请求参数 = %@\n 请求URL = %@\n 请求方式 = %@\n 缓存策略 = %@\n",parameters ? parameters:@"", url, [self getMethodStr:method], [self cachePolicyStr:cachePolicy]);
     }
 
-    if (cachePolicy == MSCachePolicyOnlyNetNoCache) {
-        //只从网络获取数据，且数据不会缓存在本地
-        [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
-    }else if (cachePolicy == MSCachePolicyOnlyCache){
-        //只从缓存读数据，如果缓存没有数据，返回一个空。
-        [self httpCacheForURL:url parameters:parameters withBlock:success];
-
-    }else if (cachePolicy == MSCachePolicyNetCacheBoth){
-        //先从网络获取数据，同时会在本地缓存数据
-        [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
-            [self setHttpCache:responseObject url:url parameters:parameters];
-            success ? success(responseObject) : nil;
-        } failure:failure];
-
-    }else if (cachePolicy == MSCachePolicyCacheElseNet){
-        //先从缓存读取数据，如果没有再从网络获取
-        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
-            if (object) {
-                success ? success(object) : nil;
-            }else{
-                [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
-            }
-        }];
-    }else if (cachePolicy == MSCachePolicyNetElseCache){
-        //先从网络获取数据，如果没有，此处的没有可以理解为访问网络失败，再从缓存读取，并且返回Error
-        [self httpWithMethod:method url:url parameters:parameters success:success failure:^(NSError *error) {
+    switch (cachePolicy) {
+        case MSCachePolicyOnlyNetNoCache:{
+            //只从网络获取数据，且数据不会缓存在本地
+            [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
+        }
+            break;
+        case  MSCachePolicyCacheElseNet:{
+            //从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据
             [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
                 success ? success(object) : nil;
+                [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
+                    [self setHttpCache:responseObject url:url parameters:parameters];
+                } failure:failure];
             }];
-            failure(error);
-        }];
-    }else if (cachePolicy == MSCachePolicyCacheThenNet){
-        //先从缓存读取数据，然后在本地缓存数据，无论结果如何都会再次从网络获取数据，在这种情况下，Block将产生两次调用
-        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
-            success ? success(object) : nil;
+        }
+            break;
+        case MSCachePolicyNetElseCache:{
+            //先从网络获取数据，同时会在本地缓存数据，如果没有（此处的没有可以理解为访问网络失败）再从缓存读取，并且返回Error
             [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
-                [self setHttpCache:responseObject url:url parameters:parameters];
                 success ? success(responseObject) : nil;
-            } failure:failure];
-        }];
-    }else{
-        //缓存策略错误，将采取 MSCachePolicyOnlyNetNoCache 策略
-        MSLog(@"缓存策略错误");
-        [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
+                [self setHttpCache:responseObject url:url parameters:parameters];
+            } failure:^(NSError *error) {
+                [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
+                    success ? success(object) : nil;
+                }];
+                failure(error);
+            }];
+        }
+            break;
+        case MSCachePolicyCacheThenNet:{
+            //先从缓存读取数据，然后在从网络获取并且缓存，在这种情况下，Block将产生两次调用
+            [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
+                if (object) {
+                    success ? success(object) : nil;
+                }
+                [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
+                    //尽量避免多次调用Block
+                    if (object != responseObject && responseObject) {
+                        [self setHttpCache:responseObject url:url parameters:parameters];
+                        success ? success(responseObject) : nil;
+                    }
+                } failure:failure];
+            }];
+        }
+            break;
+
+        default:
+            break;
     }
+
+
+//    if (cachePolicy == MSCachePolicyOnlyNetNoCache) {
+//
+//    }else if (cachePolicy == MSCachePolicyOnlyCache){
+//        //只从缓存读数据，如果缓存没有数据，返回一个空。
+//        [self httpCacheForURL:url parameters:parameters withBlock:success];
+//
+//    }else if (cachePolicy == MSCachePolicyNetCacheBoth){
+//        //先从网络获取数据，同时会在本地缓存数据
+//        [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
+//            [self setHttpCache:responseObject url:url parameters:parameters];
+//            success ? success(responseObject) : nil;
+//        } failure:failure];
+//
+//    }else if (cachePolicy == MSCachePolicyCacheElseNet){
+//        //先从缓存读取数据，如果没有再从网络获取
+//        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
+//            if (object) {
+//                success ? success(object) : nil;
+//            }else{
+//                [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
+//            }
+//        }];
+//    }else if (cachePolicy == MSCachePolicyNetElseCache){
+//
+//
+//    }else if (cachePolicy == MSCachePolicyCacheThenNet){
+//        //先从缓存读取数据，然后在本地缓存数据，无论结果如何都会再次从网络获取数据，在这种情况下，Block将产生两次调用
+//        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
+//            success ? success(object) : nil;
+//            [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
+//                [self setHttpCache:responseObject url:url parameters:parameters];
+//                success ? success(responseObject) : nil;
+//            } failure:failure];
+//        }];
+//    }else{
+//        //缓存策略错误，将采取 MSCachePolicyOnlyNetNoCache 策略
+//        MSLog(@"缓存策略错误");
+//        [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
+//    }
 }
 
 
@@ -474,24 +510,7 @@ static YYCache *_dataCache;
         failure ? failure(error) : nil;
         [[self allSessionTask] removeObject:task];
     }];
-}
-
-+ (void)httpWithMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters callBlock:(void(^)(id responseObject,NSError *error))callBlock{
     
-    [self dataTaskWithHTTPMethod:method url:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
-        if (_isOpenLog) {
-            MSLog(@"请求结果 = %@",[self dictionaryToJson:responseObject]);
-        }
-        [[self allSessionTask] removeObject:task];
-        callBlock ? callBlock(responseObject,nil) : nil;
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (_isOpenLog) {
-            MSLog(@"错误内容 = %@",error);
-        }
-        callBlock ? callBlock(nil,error) : nil;
-        [[self allSessionTask] removeObject:task];
-    }];
 }
 
 
@@ -499,22 +518,36 @@ static YYCache *_dataCache;
                      success:(void (^)(NSURLSessionDataTask * _Nullable, id _Nullable))success
                       failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure {
     NSURLSessionTask *sessionTask;
-    if (method == MSRequestMethodGET){
-        sessionTask = [_sessionManager GET:url parameters:parameters progress:nil success:success failure:failure];
-    }else if (method == MSRequestMethodPOST) {
-        sessionTask = [_sessionManager POST:url parameters:parameters progress:nil success:success failure:failure];
-    }else if (method == MSRequestMethodHEAD) {
-        sessionTask = [_sessionManager HEAD:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task) {
-            success(task,nil);
-        } failure:failure];
-    }else if (method == MSRequestMethodPUT) {
-        sessionTask = [_sessionManager PUT:url parameters:parameters success:success failure:failure];
-    }else if (method == MSRequestMethodPATCH) {
-        sessionTask = [_sessionManager PATCH:url parameters:parameters success:success failure:failure];
-    }else if (method == MSRequestMethodDELETE) {
-        sessionTask = [_sessionManager DELETE:url parameters:parameters success:success failure:failure];
+    
+    switch (method) {
+        case MSRequestMethodGET:{
+            sessionTask = [_sessionManager GET:url parameters:parameters progress:nil success:success failure:failure];
+        }
+            break;
+        case MSRequestMethodPOST:{
+            sessionTask = [_sessionManager POST:url parameters:parameters progress:nil success:success failure:failure];
+        }
+            break;
+        case MSRequestMethodHEAD:{
+            sessionTask = [_sessionManager HEAD:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task) {
+                success(task,nil);
+            } failure:failure];
+        }
+            break;
+        case MSRequestMethodPUT:{
+            sessionTask = [_sessionManager PUT:url parameters:parameters success:success failure:failure];
+        }
+            break;
+        case MSRequestMethodPATCH:{
+            sessionTask = [_sessionManager PATCH:url parameters:parameters success:success failure:failure];
+        }
+            break;
+        case MSRequestMethodDELETE:{
+            sessionTask = [_sessionManager DELETE:url parameters:parameters success:success failure:failure];
+        }
+        default:
+            break;
     }
-
     //添加最新的sessionTask到数组
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
 }
@@ -552,11 +585,11 @@ static YYCache *_dataCache;
     return _dataCache;
 }
 
-+ (void)setHttpCache:(id)httpData url:(NSString *)url parameters:(NSDictionary *)parameters
-{
++ (void)setHttpCache:(id)httpData url:(NSString *)url parameters:(NSDictionary *)parameters{
     if (httpData) {
         NSString *cacheKey = [self cacheKeyWithURL:url parameters:parameters];
-        MSLog(@"缓存cacheKey = %@",cacheKey);
+//        NSString *cacheTime = NSStringFormat(@"%@Time",cacheKey);//缓存时间
+//        [_dataCache setObject:[NSDate date] forKey:cacheTime];
         [_dataCache setObject:httpData forKey:cacheKey withBlock:nil];
     }
 }
@@ -564,7 +597,8 @@ static YYCache *_dataCache;
 + (void)httpCacheForURL:(NSString *)url parameters:(NSDictionary *)parameters withBlock:(void(^)(id responseObject))block
 {
     NSString *cacheKey = [self cacheKeyWithURL:url parameters:parameters];
-    MSLog(@"获取缓存cacheKey = %@",cacheKey);
+   // NSString *cacheTime = NSStringFormat(@"%@Time",cacheKey);//缓存时间
+  
     [_dataCache objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nonnull object) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_isOpenLog) {
@@ -573,6 +607,7 @@ static YYCache *_dataCache;
             block(object);
         });
     }];
+   
 }
 
 

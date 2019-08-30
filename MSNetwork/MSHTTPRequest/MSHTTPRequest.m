@@ -7,8 +7,7 @@
 //
 
 #import "MSHTTPRequest.h"
-#import "MSInterfaceConst.h"
-#import "MBProgressHUD+Hud.h"
+
 
 @implementation MSHTTPRequest
 /** 登录*/
@@ -33,7 +32,7 @@
 
 + (void)requestWithMethod:(MSRequestMethod)method url:(NSString *)URL  parameters:(NSDictionary *)parameters cachePolicy:(MSCachePolicy)cachePolicy success:(MSHttpSuccess)success  failure:(MSHttpFail)failure{
     // 在请求之前你可以统一配置你请求的相关参数 ,设置请求头, 请求参数的格式, 返回数据的格式....这样你就不需要每次请求都要设置一遍相关参数
-    
+    [MSNetwork closeLog];
     //设置基础的Url
     //最终完整Url为[NSString stringWithFormat:@“%@%@”,_baseURL,URL]
     [MSNetwork setBaseURL:kApiPrefix];
