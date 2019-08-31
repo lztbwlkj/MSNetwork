@@ -2,9 +2,25 @@
 基于AFNetworking 3.x与YYCache的二次封装,包括网络请求、文件上传、文件下载这三个方法。并且支持RESTful API,GET、POST、HEAD、PUT、DELETE、PATCH的请求,方法接口简洁明了,并结合YYYCache做了网络数据的缓存策略。简单易用,一句代码搞定网络数据的请求与缓存,控制台可直接打印json中文字符,调试更方便
 
 ## 效果图
-<img src="https://github.com/lztbwlkj/MSNetwork/blob/master/Example/IMG_1786.PNG"  width="313" height="616"  alt="Demo效果" align=left />
-<img src="https://github.com/lztbwlkj/MSNetwork/blob/master/Example/IMG_1790.PNG"  width="313" height="616"  alt="Demo效果" align=center />
-<img src="https://github.com/lztbwlkj/MSNetwork/blob/master/Example/未命名.gif"  width="313" height="616"  alt="Demo效果" align=right />
+
+<table>
+<tr>
+<th>请求方式</th>
+<th>缓存策略</th>
+<th>文件下载</th>
+<th>文件上传</th>
+</tr>
+
+<tr>
+<td><img src="https://github.com/lztbwlkj/MSNetwork/blob/master/Example/IMG_1786.PNG" width="340" height="410"></td>
+<td><img src="https://github.com/lztbwlkj/MSNetwork/blob/master/Example/IMG_1790.PNG" width="340" height="410"></td>
+<td><img src="https://github.com/lztbwlkj/MSNetwork/blob/master/Example/未命名.gif" width="340" height="410"></td>
+<td > <p>暂未测试</p> </td>
+</tr>
+   
+</table>
+
+
 
 ## Requirements 要求
 
