@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSUInteger, MSCachePolicy){
     /**只从网络获取数据，且数据不会缓存在本地**/
     MSCachePolicyOnlyNetNoCache = 0,
-    /** 从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据**/
+    /** 从缓存读取数据并返回，再从网络获取并缓存，每次只读取缓存数据 这种一般用于广告页面加载模式**/
     MSCachePolicyCacheElseNet,
     /** 先从网络获取数据并缓存数据，如果访问网络失败再从缓存读取，失败的Block和成功的Block都会执行*/
     MSCachePolicyNetElseCache,
