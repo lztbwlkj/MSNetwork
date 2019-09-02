@@ -1,15 +1,29 @@
 
-Pod::Spec.new do |s|
-s.name = 'MSNetwork'
-s.version = '0.0.1'
-s.license = 'MIT'
-s.summary = '基于AFNetworking 3.x与YYCache的二次封装,多种缓存策略任你选,麻麻再也不用担心我一句一句地写SQLite啦'
-s.homepage = 'https://github.com/lztbwlkj/MSNetwork'
-s.authors = { 'lztbwlkj' => 'lztbwlkj@gmail.com' }
+
+Pod::Spec.new do |spec|
+
+# ―――  Spec Metadata  ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
+#
+#  These will help people to find your library, and whilst it
+#  can feel like a chore to fill in it's definitely to your advantage. The
+#  summary should be tweet-length, and the description more in depth.
+#
+
+spec.name         = "MSNetwork"
+spec.version      = "0.0.1"
+spec.summary      = "Based on the secondary encapsulation of AFNetworking 3.x and YYCache,you can choose a variety of caching strategies."
+spec.description  = <<-DESC
+                 基于AFNetworking 3.x与YYCache的二次封装,包括网络请求、文件上传、文件下载这三个方法。并且支持RESTful API,GET、POST、HEAD、PUT、DELETE、PATCH的请求,方法接口简洁明了,并结合YYCache做了网络数据的缓存策略。简单易用,一句代码搞定网络数据的请求与缓存,控制台可直接打印json中文字符,调试更方便
+DESC
+
+spec.homepage     = "https://github.com/lztbwlkj/MSNetwork"
+spec.license          = { :type => 'MIT', :file => 'LICENSE' }
+spec.author             = { "lztbwlkj" => "lztbwlkj@gmail.com" }
+spec.platform     = :ios,"8.0"
 spec.source       = { :git => "https://github.com/lztbwlkj/MSNetwork.git", :tag => "#{spec.version}" }
-spec.platform     = :ios, "8.0"
-s.source_files = 'MSNetwork/*.{h,m}'
-spec.dependency "AFNetworking"
-spec.dependency "YYCache"
-s.requires_arc = true
+spec.source_files  = "MSNetwork/*.{h,m}"
+spec.requires_arc = true
+spec.dependency 'AFNetworking'
+spec.dependency 'YYCache'
+
 end
