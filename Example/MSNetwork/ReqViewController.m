@@ -148,6 +148,22 @@
         [MBProgressHUD mb_showMidMessage:[error localizedDescription] onView:nil hideBlock:nil];
         weakSelf.contentView.text = [error localizedDescription];
     }];
+    
+ 
+//    [MSNetwork uploadImageURL:@"" parameters:@{} images:@[] name:@"" fileName:@"" imageScale:0.5 imageType:@"" progress:^(NSProgress * _Nonnull progress) {
+//        //上传进度
+//        NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);
+//
+//    } success:^(id  _Nonnull responseObject) {
+//        //上传成功
+//
+//    } failure:^(NSError * _Nonnull error) {
+//        //上传失败
+//
+//    }];
+    
+
+ 
 }
 
 - (IBAction)cancel:(UIButton *)sender {

@@ -254,7 +254,7 @@ static YYCache *_dataCache;
 }
 
 #pragma mark -- 上传文件
-+ (void)uploadFileWithURL:(NSString *)url parameters:(NSDictionary *)parameters name:(NSString *)name filePath:(NSString *)filePath
++ (NSURLSessionTask *)uploadFileWithURL:(NSString *)url parameters:(NSDictionary *)parameters name:(NSString *)name filePath:(NSString *)filePath
                  progress:(MSHttpProgress)progress
                   success:(MSHttpSuccess)success
                   failure:(MSHttpFail)failure{
@@ -280,12 +280,14 @@ static YYCache *_dataCache;
     }];
     //添加最新的sessionTask到数组
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
+    
+    return sessionTask;
 }
 
 #pragma mark -- 上传图片文件
-+ (void)uploadImageURL:(NSString *)url parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images
++ (NSURLSessionTask *)uploadImageURL:(NSString *)url parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images
                   name:(NSString *)name
-             fileNames:(NSString *)fileName
+             fileName:(NSString *)fileName
             imageScale:(CGFloat)imageScale
              imageType:(NSString *)imageType
               progress:(MSHttpProgress)progress
@@ -331,10 +333,11 @@ static YYCache *_dataCache;
     //添加最新的sessionTask到数组
     sessionTask ? [[self allSessionTask] addObject:sessionTask] : nil;
 
+    return sessionTask;
 };
 
 #pragma mark -- 下载文件
-+(void)downloadWithURL:(NSString *)url fileDir:(NSString *)fileDir progress:(MSHttpProgress)progress success:(MSHttpDownload)success
++ (NSURLSessionTask *) downloadWithURL:(NSString *)url fileDir:(NSString *)fileDir progress:(MSHttpProgress)progress success:(MSHttpDownload)success
                                                                                                      failure:(MSHttpFail)failure{
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     __block NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -374,6 +377,8 @@ static YYCache *_dataCache;
 
     //添加sessionTask到数组
     downloadTask ? [[self allSessionTask] addObject:downloadTask] : nil;
+    
+    return downloadTask;
 }
 
 
@@ -652,9 +657,8 @@ static YYCache *_dataCache;
 /************************************重置AFHTTPSessionManager相关属性**************/
 #pragma mark -- 重置AFHTTPSessionManager相关属性
 
-+ (AFHTTPSessionManager *)getAFHTTPSessionManager
-{
-    return _sessionManager;
++ (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager {
+    sessionManager ? sessionManager(_sessionManager) : nil;
 }
 
 + (void)setRequestSerializer:(MSRequestSerializer)requestSerializer{

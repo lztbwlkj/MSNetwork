@@ -263,7 +263,20 @@ cachePolicy:(MSCachePolicy)cachePolicy
                failure:(MSHttpFail)failure;
 
 #pragma mark -- 上传文件
-+ (void)uploadFileWithURL:(NSString *)url
+
+/**
+ 上传文件
+
+ @param url 服务器地址
+ @param parameters 上传参数
+ @param name 与服务器对应的字段
+ @param filePath 文件对应本地的路径
+ @param progress 上传进度
+ @param success  上传成功
+ @param failure  上传失败
+ @return NSURLSessionTask
+ */
++ (NSURLSessionTask *)uploadFileWithURL:(NSString *)url
                parameters:(NSDictionary *)parameters
                      name:(NSString *)name
                  filePath:(NSString *)filePath
@@ -272,11 +285,27 @@ cachePolicy:(MSCachePolicy)cachePolicy
                   failure:(MSHttpFail)failure;
 
 #pragma mark -- 上传多张图片文件
-+ (void)uploadImageURL:(NSString *)url
+
+/**
+ 上传单/多张图片文件
+
+ @param url 服务器地址
+ @param parameters 上传参数
+ @param images 图片数组
+ @param name 与服务器对应的字段
+ @param fileName 文件名 最终结果处理为文件名+文件在数组中的index
+ @param imageScale 图片文件压缩比 范围 (0.f ~ 1.f)
+ @param imageType 图片的类型,png,jpeg
+ @param progress  上传进度
+ @param success  上传成功
+ @param failure  上传失败
+ @return NSURLSessionTask
+ */
++ (NSURLSessionTask *)uploadImageURL:(NSString *)url
             parameters:(NSDictionary *)parameters
                 images:(NSArray<UIImage *> *)images
                   name:(NSString *)name
-             fileNames:(NSString *)fileName
+             fileName:(NSString *)fileName
             imageScale:(CGFloat)imageScale
              imageType:(NSString *)imageType
               progress:(MSHttpProgress)progress
@@ -284,7 +313,18 @@ cachePolicy:(MSCachePolicy)cachePolicy
                failure:(MSHttpFail)failure;
 
 #pragma mark -- 下载文件
-+(void)downloadWithURL:(NSString *)url
+
+/**
+ 下载文件
+
+ @param url 服务器地址
+ @param fileDir 文件本地的沙盒路径（默认为DownLoad文件夹）
+ @param progress 上传进度
+ @param success  上传成功
+ @param failure  上传失败
+ @return NSURLSessionTask
+ */
++ (NSURLSessionTask *) downloadWithURL:(NSString *)url
                fileDir:(NSString *)fileDir
               progress:(MSHttpProgress)progress
                success:(MSHttpDownload)success
@@ -347,21 +387,25 @@ cachePolicy:(MSCachePolicy)cachePolicy
 + (void)removeAllHttpCacheBlock:(void(^)(int removedCount, int totalCount))progress
                        endBlock:(void(^)(BOOL error))end;
 
+
 #pragma mark -- 重置AFHTTPSessionManager相关属性
 
-/**
- *  获取AFHTTPSessionManager对象
- */
-+ (AFHTTPSessionManager *)getAFHTTPSessionManager;
+#pragma mark - 设置AFHTTPSessionManager相关属性
+#pragma mark 注意: 因为全局只有一个AFHTTPSessionManager实例,所以以下设置方式全局生效
 
+/**
+ 在开发中,如果以下的设置方式不满足项目的需求,就调用此方法获取AFHTTPSessionManager实例进行自定义设置
+ (注意: 调用此方法时在要导入AFNetworking.h头文件,否则可能会报找不到AFHTTPSessionManager的❌)
+ @param sessionManager AFHTTPSessionManager的实例
+ */
+
++ (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager;
 /**
  设置网络请求参数的格式:默认为JSON格式
 
  @param requestSerializer MSRequestSerializerJSON---JSON格式  MSRequestSerializerHTTP--HTTP
  */
 + (void)setRequestSerializer:(MSRequestSerializer)requestSerializer;
-
-
 
 /**
  设置服务器响应数据格式:默认为JSON格式

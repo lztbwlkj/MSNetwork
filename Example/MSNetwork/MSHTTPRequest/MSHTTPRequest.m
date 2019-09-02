@@ -57,6 +57,13 @@
 //        NSLog(@"hud已经隐藏");
 //    }];
 
+    
+//    [MSNetwork setAFHTTPSessionManagerProperty:^(AFHTTPSessionManager * sessionManager) {
+//
+//    }];
+    
+ 
+    
     // 发起请求
     [MSNetwork HTTPWithMethod:method url:URL parameters:parameters cachePolicy:cachePolicy success:^(id  _Nonnull responseObject) {
         //[MBProgressHUD mb_hide];
