@@ -37,7 +37,7 @@
 暂不支持Cocoapods安装、如果用户比较多后续会添加
 ```
 ### 手动安装
-
+注意: 项目中需要有AFN3.x , YYCache第三方库! 在工程中链接sqlite3依赖库
 ```objc
 1、下载Demo后将MSNetwork文件夹添加到项目目录中;
 2、创建并配置PrefixHeader.pch文件或者导入头文件MSNetwork.h开始使用即可;
@@ -214,7 +214,7 @@ __weak __typeof(&*self)weakSelf = self;
 ```
 #### 其他请求方式（HEAD、PUT、DELETE、PATCH）
 
-HEAD、PUT、DELETE、PATCH请求方式和GET、POST方式类似，请前往MSNetwork.h文件中查看对应方法（相信聪明的你你看就明白）
+HEAD、PUT、DELETE、PATCH请求方式和GET、POST方式类似，请前往MSNetwork.h文件中查看对应方法（相信聪明的你一看就明白了！~ Q.Q ~）
 
 #### 自定义请求方式
 ```objc
