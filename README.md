@@ -34,7 +34,7 @@
 ### Cocoapods安装
 
 ```objc
-暂不支持Cocoapods安装、如果用户比较多后续会添加
+ pod 'MSNetwork'
 ```
 ### 手动安装
 注意: 项目中需要有AFN3.x , YYCache第三方库! 在工程中链接sqlite3依赖库
