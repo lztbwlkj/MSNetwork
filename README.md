@@ -2,7 +2,7 @@
 ![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) ![](https://img.shields.io/cocoapods/v/PPNetworkHelper.svg?style=flat) ![](https://img.shields.io/cocoapods/dt/PPNetworkHelper.svg
 ) ![](https://img.shields.io/badge/license-MIT%20License-brightgreen.svg)  
 
-基于AFNetworking 3.x与YYCache的二次封装,包括网络请求、文件上传、文件下载这三个方法。并且支持RESTful API,GET、POST、HEAD、PUT、DELETE、PATCH的请求,方法接口简洁明了,并结合YYYCache做了网络数据的缓存策略。简单易用,一句代码搞定网络数据的请求与缓存,控制台可直接打印json中文字符,调试更方便
+基于AFNetworking 3.x与YYCache的二次封装,包括网络请求、文件上传、文件下载这三个方法。并且支持RESTful API,GET、POST、HEAD、PUT、DELETE、PATCH的请求,方法接口简洁明了,并结合YYCache做了网络数据的缓存策略。简单易用,一句代码搞定网络数据的请求与缓存,控制台可直接打印json中文字符,调试更方便
 
 ## 效果图
 
@@ -195,19 +195,9 @@ __weak __typeof(&*self)weakSelf = self;
 
 NSDictionary *para = @{@"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
 [MSHTTPRequest GET:@"" parameters:para cachePolicy:MSCachePolicyCacheThenNet success:^(id  _Nonnull responseObject) {
-if (weakSelf.dataSource.count>0){
-[weakSelf.dataSource removeAllObjects];
-}
-
-DemoModel *model = [DemoModel yy_modelWithDictionary:responseObject];
-
-for (List *list in model.list) {
-[weakSelf.dataSource addObject:list];
-}
-[weakSelf.tableView reloadData];
 
 } failure:^(NSError * _Nonnull error) {
-[MBProgressHUD mb_showMidMessage:[error localizedDescription] onView:nil hideBlock:nil];
+
 }];
 ```
 
