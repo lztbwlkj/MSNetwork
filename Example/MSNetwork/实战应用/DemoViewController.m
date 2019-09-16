@@ -55,7 +55,7 @@
             [weakSelf.dataSource removeAllObjects];
         }
         
-        DemoModel *model = [DemoModel yy_modelWithDictionary:responseObject];
+        DemoModel *model = [DemoModel modelWithDictionary:responseObject];
         
         for (List *list in model.list) {
             [weakSelf.dataSource addObject:list];

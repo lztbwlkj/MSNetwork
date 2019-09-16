@@ -15,7 +15,7 @@
 
 #import "MBProgressHUD+Hud.h"
 
-#import "YYModel.h"
+#import "YYKit.h"
 
 
 #endif /* PrefixHeader_pch */
