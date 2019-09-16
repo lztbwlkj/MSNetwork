@@ -9,7 +9,7 @@
 #import "MSNetwork.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AFNetworking.h"
-#import <YYKit/YYCache.h>
+#import "YYKit.h"
 
 #ifdef DEBUG
 #define MSLog(FORMAT, ...) fprintf(stderr,"[%s:%d行] %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);

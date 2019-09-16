@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define kIsWiFiNetwork [MSNetwork isWiFiNetwork]  // 一次性判断是否为WiFi网络的宏
 #endif
 
-@class YYMemoryCache,YYDiskCache, AFHTTPSessionManager;
+@class YYCache, AFHTTPSessionManager;
 /**
  这是我目前能想到的几个缓存场景
  * 只从网络获取数据，且数据不会缓存在本地（一般情况）
