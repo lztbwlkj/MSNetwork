@@ -7,7 +7,7 @@
 //
 
 #import "MSNetwork.h"
-#import <YYKit/YYCache.h>
+#import <YYKit/YYDiskCache.h>
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AFNetworking.h"
 
