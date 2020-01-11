@@ -454,47 +454,6 @@ static YYCache *_dataCache;
         default:
             break;
     }
-
-
-//    if (cachePolicy == MSCachePolicyOnlyNetNoCache) {
-//
-//    }else if (cachePolicy == MSCachePolicyOnlyCache){
-//        //只从缓存读数据，如果缓存没有数据，返回一个空。
-//        [self httpCacheForURL:url parameters:parameters withBlock:success];
-//
-//    }else if (cachePolicy == MSCachePolicyNetCacheBoth){
-//        //先从网络获取数据，同时会在本地缓存数据
-//        [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
-//            [self setHttpCache:responseObject url:url parameters:parameters];
-//            success ? success(responseObject) : nil;
-//        } failure:failure];
-//
-//    }else if (cachePolicy == MSCachePolicyCacheElseNet){
-//        //先从缓存读取数据，如果没有再从网络获取
-//        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
-//            if (object) {
-//                success ? success(object) : nil;
-//            }else{
-//                [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
-//            }
-//        }];
-//    }else if (cachePolicy == MSCachePolicyNetElseCache){
-//
-//
-//    }else if (cachePolicy == MSCachePolicyCacheThenNet){
-//        //先从缓存读取数据，然后在本地缓存数据，无论结果如何都会再次从网络获取数据，在这种情况下，Block将产生两次调用
-//        [self httpCacheForURL:url parameters:parameters withBlock:^(id<NSCoding> object) {
-//            success ? success(object) : nil;
-//            [self httpWithMethod:method url:url parameters:parameters success:^(id responseObject) {
-//                [self setHttpCache:responseObject url:url parameters:parameters];
-//                success ? success(responseObject) : nil;
-//            } failure:failure];
-//        }];
-//    }else{
-//        //缓存策略错误，将采取 MSCachePolicyOnlyNetNoCache 策略
-//        MSLog(@"缓存策略错误");
-//        [self httpWithMethod:method url:url parameters:parameters success:success failure:failure];
-//    }
 }
 
 
