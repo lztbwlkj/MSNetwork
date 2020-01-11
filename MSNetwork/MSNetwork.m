@@ -58,6 +58,8 @@ static YYCache *_dataCache;
     //设置服务器返回结果的类型:JSON(AFJSONResponseSerializer,AFHTTPResponseSerializer)
     _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
     
+    _sessionManager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    
     _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*",@"multipart/form-data",@"application/x-www-form-urlencoded", nil];
     //开始监测网络状态
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
@@ -461,7 +463,7 @@ static YYCache *_dataCache;
 
 
 #pragma mark -- 网络请求处理
-+(void)httpWithMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters success:(MSHttpSuccess)success failure:(MSHttpFail)failure{
++ (void)httpWithMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters success:(MSHttpSuccess)success failure:(MSHttpFail)failure{
 
     [self dataTaskWithHTTPMethod:method url:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
         if (_isOpenLog) {
@@ -481,7 +483,7 @@ static YYCache *_dataCache;
 }
 
 
-+(void)dataTaskWithHTTPMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters
++ (void)dataTaskWithHTTPMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters
                      success:(void (^)(NSURLSessionDataTask * _Nullable, id _Nullable))success
                       failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure {
     NSURLSessionTask *sessionTask;
@@ -502,6 +504,11 @@ static YYCache *_dataCache;
         }
             break;
         case MSRequestMethodPUT:{
+//            NSMutableString *appedUrl = [NSMutableString string];
+//            [parameters enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+//                [appedUrl appendFormat:@"%@&%@",key,obj];
+//            }];
+//            url = NSStringFormat(@"%@?%@",url,appedUrl);
             sessionTask = [_sessionManager PUT:url parameters:parameters success:success failure:failure];
         }
             break;

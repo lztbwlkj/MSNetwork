@@ -7,7 +7,7 @@
 //
 
 #import "ReqViewController.h"
-
+#import <AFNetworking/AFNetworking.h>
 
 @interface ReqViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *statusDesc;
@@ -133,13 +133,15 @@
     //默认参数在AppDelegaate.m中，该接口需要以参数jsonStr为固定键，值为字符串的字典类型
     //强烈建议在该方法上再封装一次自己公司接口的请求参数配置和请求方式
     __weak __typeof(&*self)weakSelf = self;
-//    NSDictionary *para = @{ @"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
-//    NSLog(@"parameters = %@",[self jsonToString:para]);
+    NSDictionary *para = @{ @"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
+    NSLog(@"parameters = %@",[self jsonToString:para]);
 //    [MSNetwork setValue:@"9" forHTTPHeaderField:@"fromType"];
-    [MSNetwork setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [MSNetwork setBaseURL:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example"];
+//    [MSNetwork setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//    [MSNetwork setBaseURL:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example"];
+    [MSNetwork setBaseURL:@"http://192.168.10.58:8080/"];
+//    [MSNetwork setResponseSerializer:MSResponseSerializerHTTP];
 //    NSDictionary *parameters = [self dictionaryWithJsonString:_pramet.text];
-    [MSNetwork HTTPWithMethod:self.method url:@"/service/dabaojian?name=cehsi" parameters:nil cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
+    [MSNetwork HTTPWithMethod:self.method url:@"testPut" parameters:@{@"type":@"100",@"pageSize":@"10",@"page":@"1"} cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
         sender.enabled = YES;
         weakSelf.contentView.text = [NSString stringWithFormat:@"%@",responseObject];
         NSLog(@"block调用次数 %d",self.blockSuccessCount++);
@@ -148,6 +150,19 @@
         [MBProgressHUD mb_showMidMessage:[error localizedDescription] onView:nil hideBlock:nil];
         weakSelf.contentView.text = [error localizedDescription];
     }];
+    
+//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.requestSerializer.timeoutInterval = 30.f;
+////    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
+//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [manager PUT:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example/service/dabaojian" parameters:@{@"name":@"ceshi"} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        // 1.先加载缓存数据
+//        weakSelf.contentView.text = [NSString stringWithFormat:@"%@",responseObject];
+//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//        weakSelf.contentView.text = [error localizedDescription];
+//
+//    }];
     
  
 //    [MSNetwork uploadImageURL:@"" parameters:@{} images:@[] name:@"" fileName:@"" imageScale:0.5 imageType:@"" progress:^(NSProgress * _Nonnull progress) {
