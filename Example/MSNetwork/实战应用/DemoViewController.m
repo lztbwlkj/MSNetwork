@@ -9,7 +9,6 @@
 #import "DemoViewController.h"
 
 #import "DemoModel.h"
-
 @interface DemoViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic, copy) NSMutableArray *dataSource;

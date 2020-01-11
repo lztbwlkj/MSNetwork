@@ -7,9 +7,11 @@
 //
 
 #import "MSNetwork.h"
-#import <YYCache/YYCache.h>
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AFNetworking.h"
+
+
+#import <YYCache/YYCache.h>
 
 #ifdef DEBUG
 #define MSLog(FORMAT, ...) fprintf(stderr,"[%s:%d行] %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
@@ -55,7 +57,8 @@ static YYCache *_dataCache;
     _sessionManager.requestSerializer.timeoutInterval = 30.f;
     //设置服务器返回结果的类型:JSON(AFJSONResponseSerializer,AFHTTPResponseSerializer)
     _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
-    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*",@"multipart/form-data", nil];
+    
+    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*",@"multipart/form-data",@"application/x-www-form-urlencoded", nil];
     //开始监测网络状态
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     //打开状态栏菊花
