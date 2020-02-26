@@ -139,7 +139,7 @@
     [MSNetwork setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [MSNetwork setBaseURL:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example"];
 //    NSDictionary *parameters = [self dictionaryWithJsonString:_pramet.text];
-    [MSNetwork HTTPWithMethod:self.method url:@"/service/dabaojian?name=cehsi" parameters:nil cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
+    [MSNetwork HTTPWithMethod:self.method url:@"/service/dabaojian?name=cehsi" parameters:@{} cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
         sender.enabled = YES;
         weakSelf.contentView.text = [NSString stringWithFormat:@"%@",responseObject];
         NSLog(@"block调用次数 %d",self.blockSuccessCount++);
