@@ -9,7 +9,6 @@
 #import "DemoViewController.h"
 
 #import "DemoModel.h"
-
 @interface DemoViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property(nonatomic, copy) NSMutableArray *dataSource;
@@ -55,7 +54,7 @@
             [weakSelf.dataSource removeAllObjects];
         }
         
-        DemoModel *model = [DemoModel modelWithDictionary:responseObject];
+        DemoModel *model = [DemoModel yy_modelWithDictionary:responseObject];
         
         for (List *list in model.list) {
             [weakSelf.dataSource addObject:list];
