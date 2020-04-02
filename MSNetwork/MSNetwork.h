@@ -141,7 +141,7 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 + (void)setBaseParameters:(NSDictionary *)parameters;
 
 /** 预设接口请求头 */
-+ (void)setHeadr:(NSDictionary *)heder;
++ (void)setHeader:(NSDictionary *)header;
 
 #pragma mark -- 网络请求 --
 

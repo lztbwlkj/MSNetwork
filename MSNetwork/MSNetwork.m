@@ -65,7 +65,7 @@ static YYCache *_dataCache;
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     //打开状态栏菊花
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-    
+        
     _dataCache = [YYCache cacheWithName:NetworkResponseCache];
     _isOpenLog = YES;
 }
@@ -172,11 +172,12 @@ static YYCache *_dataCache;
 }
 
 /** 设置接口请求头 */
-+ (void)setHeadr:(NSDictionary *)heder{
-    for (NSString * key in heder.allKeys) {
-        [_sessionManager.requestSerializer setValue:heder[key] forHTTPHeaderField:key];
++ (void)setHeader:(NSDictionary *)header{
+    for (NSString * key in header.allKeys) {
+        [_sessionManager.requestSerializer setValue:header[key] forHTTPHeaderField:key];
     }
 }
+
 
 
 #pragma mark -- 缓存描述文字
@@ -464,7 +465,7 @@ static YYCache *_dataCache;
 
 #pragma mark -- 网络请求处理
 + (void)httpWithMethod:(MSRequestMethod)method url:(NSString *)url parameters:(NSDictionary *)parameters success:(MSHttpSuccess)success failure:(MSHttpFail)failure{
-
+    
     [self dataTaskWithHTTPMethod:method url:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
         if (_isOpenLog) {
             MSLog(@"请求结果 = %@",[self dictionaryToJson:responseObject]);
@@ -490,15 +491,15 @@ static YYCache *_dataCache;
     
     switch (method) {
         case MSRequestMethodGET:{
-            sessionTask = [_sessionManager GET:url parameters:parameters progress:nil success:success failure:failure];
+            sessionTask = [_sessionManager GET:url parameters:parameters headers:@{} progress:nil success:success failure:failure]
         }
             break;
         case MSRequestMethodPOST:{
-            sessionTask = [_sessionManager POST:url parameters:parameters progress:nil success:success failure:failure];
+            sessionTask = [_sessionManager POST:url parameters:parameters headers:@{} progress:nil success:success failure:failure];
         }
             break;
         case MSRequestMethodHEAD:{
-            sessionTask = [_sessionManager HEAD:url parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task) {
+            sessionTask = [_sessionManager HEAD:url parameters:parameters headers:@{} success:^(NSURLSessionDataTask * _Nonnull task) {
                 success(task,nil);
             } failure:failure];
         }
@@ -509,15 +510,16 @@ static YYCache *_dataCache;
 //                [appedUrl appendFormat:@"%@&%@",key,obj];
 //            }];
 //            url = NSStringFormat(@"%@?%@",url,appedUrl);
-            sessionTask = [_sessionManager PUT:url parameters:parameters success:success failure:failure];
+            sessionTask = [_sessionManager PUT:url parameters:parameters headers:@{} success:success failure:failure];
         }
             break;
         case MSRequestMethodPATCH:{
-            sessionTask = [_sessionManager PATCH:url parameters:parameters success:success failure:failure];
+            sessionTask = [_sessionManager PATCH:url parameters:parameters headers:@{} success:success failure:failure];
         }
             break;
         case MSRequestMethodDELETE:{
-            sessionTask = [_sessionManager DELETE:url parameters:parameters success:success failure:failure];
+            sessionTask = [_sessionManager DELETE:url parameters:parameters headers:@{} success:success failure:failure];
+            break;
         }
         default:
             break;
