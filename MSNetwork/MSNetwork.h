@@ -134,7 +134,6 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 + (void)stopMonitoring;
 
 
-
 /**是否打开网络加载菊花(默认打开)*/
 + (void)openNetworkActivityIndicator:(BOOL)open;
 

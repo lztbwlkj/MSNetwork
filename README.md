@@ -2,7 +2,7 @@
 ![](https://img.shields.io/badge/platform-iOS-red.svg) ![](https://img.shields.io/badge/language-Objective--C-orange.svg) 
 
 
-基于AFNetworking 3.x与YYCache的二次封装,包括网络请求、文件上传、文件下载这三个方法。并且支持RESTful API,GET、POST、HEAD、PUT、DELETE、PATCH的请求,方法接口简洁明了,并结合YYCache做了网络数据的缓存策略。简单易用,一句代码搞定网络数据的请求与缓存,控制台可直接打印json中文字符,调试更方便
+基于AFNetworking 4.x与YYCache的二次封装,包括网络请求、文件上传、文件下载这三个方法。并且支持RESTful API,GET、POST、HEAD、PUT、DELETE、PATCH的请求,方法接口简洁明了,并结合YYCache做了网络数据的缓存策略。简单易用,一句代码搞定网络数据的请求与缓存,控制台可直接打印json中文字符,调试更方便
 
 ## 效果图
 
@@ -26,8 +26,8 @@
 
 ## Requirements 要求
 
-- iOS 8+
-- Xcode 8+
+- iOS 9+
+- Xcode 10+
 
 ## 安装!
 
@@ -37,7 +37,7 @@
  pod 'MSNetwork'
 ```
 ### 手动安装
-注意: 项目中需要有AFN3.x , YYCache第三方库! 在工程中链接sqlite3依赖库
+注意: 项目中需要有AFN 4.x , YYCache第三方库! 在工程中链接sqlite3依赖库
 ```objc
 1、下载Demo后将MSNetwork文件夹添加到项目目录中;
 2、创建并配置PrefixHeader.pch文件或者导入头文件MSNetwork.h开始使用即可;
