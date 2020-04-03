@@ -62,10 +62,8 @@
 //
 //    }];
     
- 
-    
     // 发起请求
-    [MSNetwork HTTPWithMethod:method url:URL parameters:parameters cachePolicy:cachePolicy success:^(id  _Nonnull responseObject) {
+    [MSNetwork HTTPWithMethod:method url:URL parameters:parameters headers:nil cachePolicy:cachePolicy success:^(id  _Nonnull responseObject) {
         //[MBProgressHUD mb_hide];
         success(responseObject);
     } failure:^(NSError * _Nonnull error) {

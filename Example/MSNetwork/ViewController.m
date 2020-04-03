@@ -48,7 +48,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 0) {
-        
         ReqViewController *vc = [[ReqViewController alloc] init];
         vc.method = indexPath.row;
         [self.navigationController pushViewController:vc animated:YES];

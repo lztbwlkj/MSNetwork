@@ -54,6 +54,7 @@
      导致此demo检测的网络状态不正确,这仅仅只是为了演示demo的功能性, 在实际使用中可直接使用一次性网络判断,不用延时
      */
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        self.statusDesc.text = [self getCurrentNetworkStatus];
         [self getCurrentNetworkStatus];
     });
     
@@ -61,17 +62,24 @@
 }
 
 #pragma mark - 一次性获取当前最新网络状态
-- (void)getCurrentNetworkStatus
+- (NSString *)getCurrentNetworkStatus
 {
+    NSString *netStatusDesc = @"";
+    
     if (kIsNetwork) {
         NSLog(@"有网络");
         if (kIsWWANNetwork) {
             NSLog(@"手机网络");
+            netStatusDesc = @"手机网络";
+
         }else if (kIsWiFiNetwork){
             NSLog(@"WiFi网络");
+            netStatusDesc = @"WiFi网络";
+
         }
     } else {
         NSLog(@"无网络");
+        netStatusDesc = @"无网络";
     }
     // 或
     //    if ([MSNetwork isNetwork]) {
@@ -84,6 +92,8 @@
     //    } else {
     //        NSLog(@"无网络");
     //    }
+    
+    return netStatusDesc;
 }
 
 
@@ -118,6 +128,19 @@
     } failure:^(NSError * _Nonnull error) {
 
     }];
+    
+
+//    NSData *filesData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@""]];
+//
+//    [MSNetwork downloadTaskWithResumeData:filesData fileDir:nil progress:^(NSProgress * _Nonnull progress) {
+//
+//    } progress:^(NSProgress * _Nonnull downloadProgress) {
+//
+//    } success:^(NSString * _Nonnull path) {
+//
+//    } failure:^(NSError * _Nonnull error) {
+//
+//    }];
 }
 
 
@@ -133,22 +156,27 @@
     //默认参数在AppDelegaate.m中，该接口需要以参数jsonStr为固定键，值为字符串的字典类型
     //强烈建议在该方法上再封装一次自己公司接口的请求参数配置和请求方式
     __weak __typeof(&*self)weakSelf = self;
-    NSDictionary *para = @{ @"a":@"list", @"c":@"data",@"client":@"iphone",@"page":@"0",@"per":@"10", @"type":@"29"};
-    NSLog(@"parameters = %@",[self jsonToString:para]);
-//    [MSNetwork setValue:@"9" forHTTPHeaderField:@"fromType"];
+  
+//    [MSNetwork setValue:@"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NjU0NTQ1NDkwNTc3NDEyIiwicGhvbmUiOiIxNzcyNjk1NzIyMyIsIm5hbWUiOiLnsbMgIOWxsSIsImRlcElkIjoiMTI0NDEzMjA4MjY0MTI3MjgzMiIsImFjY291bnQiOiJtcyIsIm9yZ0lkIjoiNjY1MTU4MTY2MDM5NzU2ODAwIn0.l00RDBEYtCaHRFxRxj78RJPg4AP9B5UZya7z5UvRBv0" forHTTPHeaderField:@"Access-Token"];
 //    [MSNetwork setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
 //    [MSNetwork setBaseURL:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example"];
-    [MSNetwork setBaseURL:@"http://192.168.10.58:8080/"];
+//    [MSNetwork setBaseURL:@"http://paas.xb-cloud.com/canteen/api"];
 //    [MSNetwork setResponseSerializer:MSResponseSerializerHTTP];
 //    NSDictionary *parameters = [self dictionaryWithJsonString:_pramet.text];
-    [MSNetwork HTTPWithMethod:self.method url:@"testPut" parameters:@{@"type":@"100",@"pageSize":@"10",@"page":@"1"} cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
+    [MBProgressHUD mb_showMessage:@"正在获取..." detailMsg:@"" onView:nil hideBlock:nil];
+    
+    [MSNetwork HTTPWithMethod:self.method url:@"http://192.168.10.210:8080/resource/put2" parameters:@{@"a":@"list"} headers:nil cachePolicy:self.cachePolicy success:^(id  _Nonnull responseObject) {
         sender.enabled = YES;
         weakSelf.contentView.text = [NSString stringWithFormat:@"%@",responseObject];
         NSLog(@"block调用次数 %d",self.blockSuccessCount++);
+        [MBProgressHUD mb_hide];
     } failure:^(NSError * _Nonnull error) {
         sender.enabled = YES;
+        [MBProgressHUD mb_hide];
+
         [MBProgressHUD mb_showMidMessage:[error localizedDescription] onView:nil hideBlock:nil];
         weakSelf.contentView.text = [error localizedDescription];
+        
     }];
     
 //    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -156,7 +184,7 @@
 ////    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", @"text/xml", @"image/*", nil];
 //    manager.requestSerializer = [AFJSONRequestSerializer serializer];
 //    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    [manager PUT:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example/service/dabaojian" parameters:@{@"name":@"ceshi"} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//    [manager PUT:@"https://www.easy-mock.com/mock/5cac59ca8c8da20d0362099d/example/service/dabaojian" parameters:@{@"name":@"ceshi"} headers:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        // 1.先加载缓存数据
 //        weakSelf.contentView.text = [NSString stringWithFormat:@"%@",responseObject];
 //    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -164,7 +192,7 @@
 //
 //    }];
     
- 
+      //
 //    [MSNetwork uploadImageURL:@"" parameters:@{} images:@[] name:@"" fileName:@"" imageScale:0.5 imageType:@"" progress:^(NSProgress * _Nonnull progress) {
 //        //上传进度
 //        NSLog(@"上传进度:%.2f%%",100.0 * progress.completedUnitCount/progress.totalUnitCount);

@@ -67,7 +67,8 @@ typedef NS_ENUM(NSUInteger, MSNetworkStatusType){
     /**手机网络*/
     MSNetworkStatusReachableWWAN,
     /**WiFi网络*/
-    MSNetworkStatusReachableWiFi
+    MSNetworkStatusReachableWiFi,
+    
 };
 
 typedef NS_ENUM(NSUInteger, MSRequestSerializer){
@@ -122,8 +123,17 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
 /// 取消所有HTTP请求
 + (void)cancelAllRequest;
 
-/// 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)
+//开启网络监听
++ (void)startMonitoring;
+
+/// 实时获取网络状态,通过Block回调实时获取(此方法可多次调用)，内部已默认开启网络监听
+/// @param networkStatus 返回当前网络类型的枚举
 + (void)networkStatusWithBlock:(MSNetworkStatus)networkStatus;
+    
+///停止网络监听
++ (void)stopMonitoring;
+
+
 
 /**是否打开网络加载菊花(默认打开)*/
 + (void)openNetworkActivityIndicator:(BOOL)open;
@@ -151,16 +161,18 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
  
  @param URL 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
  */
 
 + (void)GET:(NSString *)URL
-               parameters:(NSDictionary *)parameters
-              cachePolicy:(MSCachePolicy)cachePolicy
-                  success:(MSHttpSuccess)success
-                  failure:(MSHttpFail)failure;
+ parameters:(NSDictionary *)parameters
+    headers:(nullable NSDictionary<NSString *,NSString *>*)headers
+cachePolicy:(MSCachePolicy)cachePolicy
+    success:(MSHttpSuccess)success
+    failure:(MSHttpFail)failure;
 
 
 #pragma mark -- POST请求
@@ -169,15 +181,17 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
  
  @param URL 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
  */
 + (void)POST:(NSString *)URL
-                parameters:(NSDictionary *)parameters
-               cachePolicy:(MSCachePolicy)cachePolicy
-                   success:(MSHttpSuccess)success
-                   failure:(MSHttpFail)failure;
+  parameters:(NSDictionary *)parameters
+     headers:(nullable NSDictionary<NSString *,NSString *>*)headers
+ cachePolicy:(MSCachePolicy)cachePolicy
+     success:(MSHttpSuccess)success
+     failure:(MSHttpFail)failure;
 
 #pragma mark -- HEAD请求
 /**
@@ -185,12 +199,14 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
  
  @param url 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
  */
 + (void)HEAD:(NSString *)url
   parameters:(NSDictionary *)parameters
+     headers:(nullable NSDictionary<NSString *,NSString *>*)headers
  cachePolicy:(MSCachePolicy)cachePolicy
      success:(MSHttpSuccess)success
      failure:(MSHttpFail)failure;
@@ -202,12 +218,14 @@ typedef void(^MSNetworkStatus)(MSNetworkStatusType status);
  
  @param url 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
  */
 + (void)PUT:(NSString *)url
  parameters:(NSDictionary *)parameters
+    headers:(nullable NSDictionary<NSString *,NSString *>*)headers
 cachePolicy:(MSCachePolicy)cachePolicy
     success:(MSHttpSuccess)success
     failure:(MSHttpFail)failure;
@@ -218,12 +236,14 @@ cachePolicy:(MSCachePolicy)cachePolicy
  
  @param url 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
  */
 + (void)PATCH:(NSString *)url
    parameters:(NSDictionary *)parameters
+      headers:(nullable NSDictionary<NSString *,NSString *>*)headers
   cachePolicy:(MSCachePolicy)cachePolicy
       success:(MSHttpSuccess)success
       failure:(MSHttpFail)failure;
@@ -235,6 +255,7 @@ cachePolicy:(MSCachePolicy)cachePolicy
  
  @param url 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
@@ -242,6 +263,7 @@ cachePolicy:(MSCachePolicy)cachePolicy
 
 + (void)DELETE:(NSString *)url
     parameters:(NSDictionary *)parameters
+       headers:(nullable NSDictionary<NSString *,NSString *>*)headers
    cachePolicy:(MSCachePolicy)cachePolicy
        success:(MSHttpSuccess)success
        failure:(MSHttpFail)failure;
@@ -251,6 +273,7 @@ cachePolicy:(MSCachePolicy)cachePolicy
  @param method 请求方式(GET, POST, HEAD, PUT, PATCH, DELETE)
  @param url 请求地址
  @param parameters 请求参数
+ @param headers 附加到默认请求header的headers
  @param cachePolicy 缓存策略
  @param success 请求成功回调
  @param failure 请求失败回调
@@ -258,6 +281,7 @@ cachePolicy:(MSCachePolicy)cachePolicy
 + (void)HTTPWithMethod:(MSRequestMethod)method
                    url:(NSString *)url
             parameters:(NSDictionary *)parameters
+               headers:(nullable NSDictionary<NSString *,NSString *>*)headers
            cachePolicy:(MSCachePolicy)cachePolicy
                success:(MSHttpSuccess)success
                failure:(MSHttpFail)failure;
@@ -266,9 +290,10 @@ cachePolicy:(MSCachePolicy)cachePolicy
 
 /**
  上传文件
-
+ 
  @param url 服务器地址
  @param parameters 上传参数
+ @param headers 附加到默认请求header的headers
  @param name 与服务器对应的字段
  @param filePath 文件对应本地的路径
  @param progress 上传进度
@@ -276,21 +301,21 @@ cachePolicy:(MSCachePolicy)cachePolicy
  @param failure  上传失败
  @return NSURLSessionTask
  */
-+ (NSURLSessionTask *)uploadFileWithURL:(NSString *)url
-               parameters:(NSDictionary *)parameters
-                     name:(NSString *)name
-                 filePath:(NSString *)filePath
-                 progress:(MSHttpProgress)progress
-                  success:(MSHttpSuccess)success
-                  failure:(MSHttpFail)failure;
++ (NSURLSessionTask *)uploadFileWithURL:(NSString *)url parameters:(NSDictionary *)parameters
+                                headers:(nullable NSDictionary<NSString *,NSString *>*)headers
+                                   name:(NSString *)name filePath:(NSString *)filePath
+                               progress:(MSHttpProgress)progress
+                                success:(MSHttpSuccess)success
+                                failure:(MSHttpFail)failure;
 
 #pragma mark -- 上传多张图片文件
 
 /**
  上传单/多张图片文件
-
+ 
  @param url 服务器地址
  @param parameters 上传参数
+ @param headers 附加到默认请求header的headers
  @param images 图片数组
  @param name 与服务器对应的字段
  @param fileName 文件名 最终结果处理为文件名+文件在数组中的index
@@ -301,22 +326,24 @@ cachePolicy:(MSCachePolicy)cachePolicy
  @param failure  上传失败
  @return NSURLSessionTask
  */
+
 + (NSURLSessionTask *)uploadImageURL:(NSString *)url
-            parameters:(NSDictionary *)parameters
-                images:(NSArray<UIImage *> *)images
-                  name:(NSString *)name
-             fileName:(NSString *)fileName
-            imageScale:(CGFloat)imageScale
-             imageType:(NSString *)imageType
-              progress:(MSHttpProgress)progress
-               success:(MSHttpSuccess)success
-               failure:(MSHttpFail)failure;
+                          parameters:(NSDictionary *)parameters
+                             headers:(nullable NSDictionary<NSString *,NSString *>*)headers
+                              images:(NSArray<UIImage *> *)images
+                                name:(NSString *)name
+                            fileName:(NSString *)fileName
+                          imageScale:(CGFloat)imageScale
+                           imageType:(NSString *)imageType
+                            progress:(MSHttpProgress)progress
+                             success:(MSHttpSuccess)success
+                             failure:(MSHttpFail)failure;
 
 #pragma mark -- 下载文件
 
 /**
  下载文件
-
+ 
  @param url 服务器地址
  @param fileDir 文件本地的沙盒路径（默认为DownLoad文件夹）
  @param progress 上传进度
@@ -325,10 +352,27 @@ cachePolicy:(MSCachePolicy)cachePolicy
  @return NSURLSessionTask
  */
 + (NSURLSessionTask *) downloadWithURL:(NSString *)url
-               fileDir:(NSString *)fileDir
-              progress:(MSHttpProgress)progress
-               success:(MSHttpDownload)success
-               failure:(MSHttpFail)failure;
+                               fileDir:(nullable NSString *)fileDir
+                              progress:(MSHttpProgress)progress
+                               success:(MSHttpDownload)success
+                               failure:(MSHttpFail)failure;
+
+/**
+ 下载文件
+ 
+ @param resumeData 用于继续下载的数据
+ @param fileDir 文件本地的沙盒路径（默认为DownLoad文件夹）
+ @param progress 上传进度
+ @param success  上传成功
+ @param failure  上传失败
+ @return NSURLSessionTask
+ */
++ (NSURLSessionTask *) downloadTaskWithResumeData:(NSData *)resumeData
+                                          fileDir:(nullable NSString *)fileDir
+                                         progress:(MSHttpProgress)progress
+                                          success:(MSHttpDownload)success
+                                          failure:(MSHttpFail)failure;
+
 
 
 #pragma mark -- 网络缓存
@@ -402,16 +446,16 @@ cachePolicy:(MSCachePolicy)cachePolicy
 + (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager;
 /**
  设置网络请求参数的格式:默认为JSON格式
-
+ 
  @param requestSerializer MSRequestSerializerJSON---JSON格式  MSRequestSerializerHTTP--HTTP
  */
 + (void)setRequestSerializer:(MSRequestSerializer)requestSerializer;
 
 /**
  设置服务器响应数据格式:默认为JSON格式
-
+ 
  @param responseSerializer MSResponseSerializerJSON---JSON格式  MSResponseSerializerHTTP--HTTP
-
+ 
  */
 + (void)setResponseSerializer:(MSResponseSerializer)responseSerializer;
 
@@ -424,7 +468,7 @@ cachePolicy:(MSCachePolicy)cachePolicy
 
 /**
  配置自建证书的Https请求，参考链接:http://blog.csdn.net/syg90178aw/article/details/52839103
-
+ 
  @param cerPath 自建https证书路径
  @param validatesDomainName 是否验证域名(默认YES) 如果证书的域名与请求的域名不一致，需设置为NO
  服务器使用其他信任机构颁发的证书也可以建立连接，但这个非常危险，建议打开 .validatesDomainName=NO,主要用于这种情况:客户端请求的是子域名，而证书上是另外一个域名。因为SSL证书上的域名是独立的
