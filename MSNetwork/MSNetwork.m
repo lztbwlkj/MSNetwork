@@ -105,11 +105,11 @@ static YYCache *_dataCache;
 
 /// 取消指定URL的HTTP请求
 + (void)cancelRequestWithURL:(NSString *)URL{
-    if (!URL) { return; }
+    if (!URL) return;
     
     @synchronized (self) {
         [[self allSessionTask] enumerateObjectsUsingBlock:^(NSURLSessionTask  *_Nonnull task, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([task.currentRequest.URL.absoluteString hasPrefix:URL]) {
+            if ([task.currentRequest.URL.absoluteString isEqualToString:URL]) {
                 [task cancel];
                 [[self allSessionTask] removeObject:task];
                 *stop = YES;
